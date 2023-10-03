@@ -1,15 +1,15 @@
 import { useReducer } from "react";
 import { Route, Routes } from "react-router-dom";
-import { MainPage } from "./MainPage";
-import { initialStateLogIn } from "../useReducer&InitialState/initialStateLogIn";
-import { initialStateTransaction } from "../useReducer&InitialState/initialStateTransaction";
-import { reducerLogIn } from "../useReducer&InitialState/reducerLogIn";
-import { reducerTransaction } from "../useReducer&InitialState/reducerTransaction";
-import { LogInPage } from "./LogInPage";
-import { Users } from "./Users";
-import { CreateAccount } from "./CreateAccount";
-import AllTransaction from "./AllTransaction";
-import DashBoard from "./Dashboard";
+import { MainPage } from "./pages/MainPage";
+import { initialStateLogIn } from "./useReducer&InitialState/initialStateLogIn";
+import { initialStateTransaction } from "./useReducer&InitialState/initialStateTransaction";
+import { reducerLogIn } from "./useReducer&InitialState/reducerLogIn";
+import { reducerTransaction } from "./useReducer&InitialState/reducerTransaction";
+import { LogInPage } from "./pages/LogInPage";
+import { Users } from "./pages/Users";
+import { CreateAccount } from "./pages/CreateAccount";
+import UserBalance from "./pages/UserBalance";
+import DashBoard from "./pages/Dashboard";
 
 function App() {
   const [stateLogIn, dispatchLogIn] = useReducer(
@@ -46,7 +46,7 @@ function App() {
             )
           }
         />
-        <Route path="transaction" element={<AllTransaction />} />
+        <Route path="balance" element={<UserBalance state={stateTransact} />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

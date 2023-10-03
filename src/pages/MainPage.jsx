@@ -4,7 +4,7 @@ import { NavLink, Outlet } from "react-router-dom";
 export function MainPage({ state }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
   return (
-    <main className="main__page">
+    <main className={`main__page ${state.isAddAcc ? "overlay" : ""}`}>
       <aside className="side__bar">
         <h1 className="logo__title">BANK</h1>
         <div className="menu" onClick={() => setIsOpenLink((open) => !open)}>
@@ -19,13 +19,13 @@ export function MainPage({ state }) {
           </li>
           <li>
             <NavLink
-              to={`/mainPage/Users/${state.selectedAccount?.firstName || ""}`}
+              to={`/mainPage/users/${state.selectedAccount?.firstName || ""}`}
             >
               Users
             </NavLink>
           </li>
           <li>
-            <NavLink to="/mainPage/transaction">Transaction</NavLink>
+            <NavLink to="/mainPage/balance">All User Balance</NavLink>
           </li>
         </ul>
       </aside>
