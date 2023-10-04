@@ -1,68 +1,73 @@
-function InputTransaction({ state, dispatch }) {
-  const { amountWidthdraw, amountDeposit, amountRequest } = state;
+function InputTransaction({
+  state,
+  onWidthdraw,
+  onDeposit,
+  onSetInput,
+  onRequest,
+}) {
+  const {
+    amountRequest,
+    isamountWidthdrawError,
+    amountWidthdrawError,
+    isamountDepositError,
+    amountDepositError,
+    amountWidthdraw,
+    amountDeposit,
+  } = state;
+
   return (
     <section className="input__transaction text-right">
-      <h1 className="text-3xl font-bold text-gray-500">Set Your Transaction</h1>
-      <form
-        className="widthdraw__form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch({ type: "WIDTHDRAW" });
-        }}
-      >
+      <form className="widthdraw__form relative" onSubmit={onWidthdraw}>
         <input
           type="number"
           name="amountWidthdraw"
           placeholder="Amount"
-          value={amountWidthdraw}
-          onChange={(e) =>
-            dispatch({
-              type: "AMOUNT",
-              payload: { field: e.target.name, input: e.target.value },
-            })
+          className={
+            isamountWidthdrawError
+              ? "border-1 border-rose-500"
+              : "border-[2px_solid_rgba(0,0,0,0.2)]"
           }
+          value={amountWidthdraw}
+          onChange={onSetInput}
         />
+        {isamountWidthdrawError ? (
+          <small className="absolute bottom-[-1.8rem] left-0 text-lg text-red-500">
+            {amountWidthdrawError}
+          </small>
+        ) : (
+          ""
+        )}
         <button>Widthdraw</button>
       </form>
-      <form
-        className="deposit__form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch({ type: "DEPOSIT" });
-        }}
-      >
+      <form className="deposit__form relative" onSubmit={onDeposit}>
         <input
           type="number"
           name="amountDeposit"
           placeholder="Amount"
           value={amountDeposit}
-          onChange={(e) =>
-            dispatch({
-              type: "AMOUNT",
-              payload: { field: e.target.name, input: e.target.value },
-            })
+          className={
+            isamountDepositError
+              ? "border-1 border-rose-500"
+              : "border-[2px_solid_rgba(0,0,0,0.2)]"
           }
+          onChange={onSetInput}
         />
+        {isamountDepositError ? (
+          <small className="absolute bottom-[-1.8rem] left-0 text-lg text-red-500">
+            {amountDepositError}
+          </small>
+        ) : (
+          ""
+        )}
         <button>Deposit</button>
       </form>
-      <form
-        className="request__form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch({ type: "DEPOSIT" });
-        }}
-      >
+      <form className="request__form" onSubmit={onRequest}>
         <input
           type="number"
-          name="amountRequest"
+          name="requestAmount"
           placeholder="Amount"
           value={amountRequest}
-          onChange={(e) =>
-            dispatch({
-              type: "AMOUNT",
-              payload: { field: e.target.name, input: e.target.value },
-            })
-          }
+          onChange={onSetInput}
         />
         <button>Request Loan</button>
       </form>

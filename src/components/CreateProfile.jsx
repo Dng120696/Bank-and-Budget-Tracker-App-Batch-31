@@ -13,10 +13,12 @@ function CreateProfile({ state, dispatch }) {
     accountList,
   } = state;
 
-  const list = accountList.map((acc) => acc.firstName.toLowerCase());
+  const listFrstName = accountList.map((acc) => acc.firstName.toLowerCase());
+  const listEmail = accountList.map((acc) => acc.email.toLowerCase());
+
   const regexInput = /^[A-Za-z]/;
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const regexNotNegativa = /^(?!-)\d+(\.\d+)?$/;
+  const regexNotNegative = /^(?!-)\d+(\.\d+)?$/;
 
   function handleError(field, message) {
     dispatch({
@@ -55,7 +57,7 @@ function CreateProfile({ state, dispatch }) {
           if (!validateInput(field, regexInput, "Can't start with a number")) {
             return;
           }
-          if (list.includes(state[field].toLowerCase())) {
+          if (listFrstName.includes(state[field].toLowerCase())) {
             handleError(field, "User already exists");
             return;
           }
@@ -64,9 +66,13 @@ function CreateProfile({ state, dispatch }) {
           if (!validateInput(field, regexEmail, "Invalid email address")) {
             return;
           }
+          if (listEmail.includes(state[field].toLowerCase())) {
+            handleError(field, "Email already exists");
+            return;
+          }
           break;
         case "accountInitialBalance":
-          if (!validateInput(field, regexNotNegativa, "Invalid Input")) {
+          if (!validateInput(field, regexNotNegative, "Invalid Input")) {
             return;
           }
           if (state[field] < 1000) {
@@ -79,7 +85,7 @@ function CreateProfile({ state, dispatch }) {
           const currentDate = new Date();
 
           if (inputDate >= currentDate) {
-            handleError(field, "Must be in the Future ");
+            handleError(field, "Must be not in the Future ");
             return;
           }
           break;
@@ -94,7 +100,7 @@ function CreateProfile({ state, dispatch }) {
   }
 
   const chechError = (isError) =>
-    isError ? "border-2 border-rose-500" : "border-[2px_solid_rgba(0,0,0,0.2)]";
+    isError ? "border-1 border-rose-500" : "border-[2px_solid_rgba(0,0,0,0.2)]";
   return (
     <div
       className={`create__account-profile ${
@@ -119,7 +125,7 @@ function CreateProfile({ state, dispatch }) {
               dispatch({
                 type: "SET_INPUT",
                 payload: {
-                  name: e.target.name,
+                  field: e.target.name,
                   input: e.target.value,
                 },
               })
@@ -145,7 +151,7 @@ function CreateProfile({ state, dispatch }) {
               dispatch({
                 type: "SET_INPUT",
                 payload: {
-                  name: e.target.name,
+                  field: e.target.name,
                   input: e.target.value,
                 },
               })
@@ -169,7 +175,7 @@ function CreateProfile({ state, dispatch }) {
             onChange={(e) =>
               dispatch({
                 type: "SET_INPUT",
-                payload: { name: e.target.name, input: e.target.value },
+                payload: { field: e.target.name, input: e.target.value },
               })
             }
           />
@@ -191,7 +197,7 @@ function CreateProfile({ state, dispatch }) {
             onChange={(e) =>
               dispatch({
                 type: "SET_INPUT",
-                payload: { name: e.target.name, input: e.target.value },
+                payload: { field: e.target.name, input: e.target.value },
               })
             }
           />
@@ -214,7 +220,7 @@ function CreateProfile({ state, dispatch }) {
             onChange={(e) =>
               dispatch({
                 type: "SET_INPUT",
-                payload: { name: e.target.name, input: e.target.value },
+                payload: { field: e.target.name, input: e.target.value },
               })
             }
           />

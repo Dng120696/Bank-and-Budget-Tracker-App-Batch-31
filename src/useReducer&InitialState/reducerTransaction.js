@@ -1,6 +1,6 @@
-import { initialStateTransaction } from "./initialStateTransaction";
+import { createAccount } from "./createAccount";
 
-const optionTransact = {
+export const optionTransact = {
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -9,7 +9,7 @@ const optionTransact = {
   second: "numeric",
 };
 
-const generatePassword = (lastname, date) => {
+export const generatePassword = (lastname, date) => {
   const dateObject = new Date(date);
   const month = String(dateObject.getMonth() + 1).padStart(2, "0");
   const day = String(dateObject.getDate()).padStart(2, "0");
@@ -17,55 +17,15 @@ const generatePassword = (lastname, date) => {
   return `${lastname}${month}${day}${year}`;
 };
 
-const createAccount = (state) => {
-  const newAccount = {
-    firstName: state.accountHolderFirstName,
-    lastName: state.accountHolderLastName,
-    initialBalance: state.accountInitialBalance,
-    email: state.email,
-    birthDate: state.birthDate,
-    password: generatePassword(state.accountHolderLastName, state.birthDate),
-    id: String(Date.now()),
-    date: new Intl.DateTimeFormat("en-PH", optionTransact).format(new Date()),
-    userTransactionHistory: [],
-    expenseList: [],
-  };
-
-  const updatedAccountList = [...state.accountList, newAccount];
-
-  localStorage.setItem("account", JSON.stringify(updatedAccountList));
-
-  return {
-    ...state,
-    accountList: updatedAccountList,
-    accountHolderFirstName: "",
-    accountHolderLastName: "",
-    accountInitialBalance: "",
-    birthDate: "",
-    email: "",
-    isAddAcc: false,
-    isaccountHolderFirstNameError: false,
-    isaccountHolderLastNameError: false,
-    isaccountInitialBalanceError: false,
-    isemailError: false,
-    isbirthDateError: false,
-    accountHolderFirstNameError: "",
-    accountHolderLastNameError: "",
-    accountInitialBalanceError: "",
-    birtDateError: "",
-    emailError: "",
-  };
-};
-
 export function reducerTransaction(state, action) {
   switch (action.type) {
     case "SET_INPUT": {
-      const { name, input } = action.payload;
+      const { field, input } = action.payload;
       return {
         ...state,
-        [name]: input,
-        [`${name}Error`]: "",
-        [`is${name}Error`]: false,
+        [field]: input,
+        [`${field}Error`]: "",
+        [`is${field}Error`]: false,
       };
     }
     case "EMPTY_INPUT": {
@@ -100,10 +60,7 @@ export function reducerTransaction(state, action) {
       localStorage.setItem("selectedAccount", JSON.stringify(action.payload));
       return { ...state, selectedAccount: action.payload };
     }
-    case "GET_ACCOUNTID":
-      return { ...state, [action.payload.field]: action.payload.input };
-    case "AMOUNT":
-      return { ...state, [action.payload.field]: action.payload.input };
+
     case "WIDTHDRAW": {
       const withdrawalAmount = state.amountWidthdraw;
       const selectedAccount = state.selectedAccount;
@@ -119,29 +76,46 @@ export function reducerTransaction(state, action) {
         amount: withdrawalAmount,
       };
 
-      const updatedAccounts = state.accountList.map((account) =>
-        account.id === selectedAccount.id
+      const updatedAccount = state.accountList.map((account) => {
+        console.log(account);
+        return account.id === selectedAccount.id
           ? {
               ...account,
               initialBalance: newBalance,
               userTransactionHistory: [
-                ...state.selectedAccount.userTransactionHistory,
                 widthdrawTransaction,
+                ...state.selectedAccount.userTransactionHistory,
               ],
             }
-          : account
+          : account;
+      });
+
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+
+      console.log(getAllTransaction);
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
       );
 
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction)
+      );
       return {
         ...state,
-        accountList: updatedAccounts,
+        allTransactionHistory: getAllTransaction,
+        accountList: updatedAccount,
         selectedAccount: {
-          ...selectedAccount,
-          initialBalance: newBalance,
-          userTransactionHistory: [
-            widthdrawTransaction,
-            ...state.selectedAccount.userTransactionHistory,
-          ],
+          ...getSelectedAccount,
         },
         amountWidthdraw: "",
       };
@@ -161,7 +135,7 @@ export function reducerTransaction(state, action) {
         amount: depositAmount,
       };
 
-      const updatedAccounts = state.accountList.map((account) =>
+      const updatedAccount = state.accountList.map((account) =>
         account.id === selectedAccount.id
           ? {
               ...account,
@@ -173,25 +147,32 @@ export function reducerTransaction(state, action) {
             }
           : account
       );
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction)
+      );
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
 
       return {
         ...state,
-        accountList: updatedAccounts,
-        selectedAccount: {
-          ...selectedAccount,
-          initialBalance: newBalance,
-          userTransactionHistory: [
-            depositTransaction,
-            ...state.selectedAccount.userTransactionHistory,
-          ],
-        },
+        accountList: updatedAccount,
+        allTransactionHistory: getAllTransaction,
+        selectedAccount: { ...getSelectedAccount },
         amountDeposit: "",
       };
     }
-    case "RECEIVER_ID":
-      return { ...state, receiverId: action.payload };
-    case "SENDER_ID":
-      return { ...state, senderId: action.payload };
     case "SEND_MONEY": {
       const receiver = state.accountList.find(
         (acc) => acc.id === state.receiverId
@@ -206,7 +187,7 @@ export function reducerTransaction(state, action) {
         date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
           new Date()
         ),
-        name: selectedAccount.name,
+        name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: state.senderAmount,
       };
@@ -215,12 +196,12 @@ export function reducerTransaction(state, action) {
         date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
           new Date()
         ),
-        name: receiver.name,
+        name: receiver.firstName,
         id: receiver.userTransactionHistory.length + 1,
         amount: state.senderAmount,
       };
 
-      const updatedAccounts = state.accountList.map((account) =>
+      const updatedAccount = state.accountList.map((account) =>
         account.id === receiver.id
           ? {
               ...account,
@@ -242,57 +223,117 @@ export function reducerTransaction(state, action) {
           : account
       );
 
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction)
+      );
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
       return {
         ...state,
-        accountList: updatedAccounts,
-        selectedAccount: {
-          ...selectedAccount,
-          initialBalance: newBalance,
-          userTransactionHistory: [
-            ...state.selectedAccount.userTransactionHistory,
-            sendingTransaction,
-          ],
-        },
+        accountList: updatedAccount,
+        allTransactionHistory: getAllTransaction,
+        selectedAccount: { ...getSelectedAccount },
         receiverId: "",
         senderId: "",
         senderAmount: "",
       };
     }
-    case "EXPENSE_NAME":
-      return { ...state, expenseName: action.payload };
     case "INPUT_EXPENSE": {
       const updateExpenseName = state.selectedAccount.expenseList.map(
         (expense) =>
-          expense.id === action.payload
-            ? { ...expense, name: action.payload }
+          expense.id === action.payload.id
+            ? { ...expense, name: action.payload.input }
             : expense
       );
-      console.log(updateExpenseName);
+
+      const updateAccount = {
+        ...state.selectedAccount,
+        expenseList: updateExpenseName,
+      };
+      localStorage.setItem("selectedAccount", JSON.stringify(updateAccount));
+
       return {
         ...state,
         selectedAccount: {
           ...state.selectedAccount,
           expenseList: updateExpenseName,
         },
+        editExpenseName: action.payload.input,
       };
     }
     case "EDIT_EXPENSE-NAME": {
-      return { ...state, isEdit: !state.isEdit };
+      const pickingExpense = state.selectedAccount.expenseList.map((expense) =>
+        expense.id === action.payload
+          ? { ...expense, isEdit: !expense.isEdit }
+          : expense
+      );
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({
+          ...state.selectedAccount,
+          expenseList: pickingExpense,
+        })
+      );
+      return {
+        ...state,
+        selectedAccount: {
+          ...state.selectedAccount,
+          expenseList: pickingExpense,
+        },
+      };
+    }
+    case "SUBMIT_EDITED_EXPENSE": {
+      const pickingExpense = state.selectedAccount.expenseList.map((expense) =>
+        expense.id === action.payload
+          ? { ...expense, isEdit: !expense.isEdit }
+          : expense
+      );
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({
+          ...state.selectedAccount,
+          expenseList: pickingExpense,
+        })
+      );
+      return {
+        ...state,
+        selectedAccount: {
+          ...state.selectedAccount,
+          expenseList: pickingExpense,
+        },
+        editExpenseName: "",
+      };
     }
     case "EXPENSE_ITEM": {
+      const selectedAccount = state.selectedAccount;
       const addItem = {
-        name: state.expenseName,
+        expenseName: state.expenseName,
+        name: selectedAccount.firstName,
         amount: state.expenseAmount,
+        type: "expense",
+        isEdit: false,
         date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
           new Date()
         ),
-        id: state.selectedAccount.expenseList.length + 1,
+        id: selectedAccount.expenseList.length + 1,
       };
       const newBalance =
         +state.selectedAccount.initialBalance - state.expenseAmount;
 
-      const updatedAccounts = state.accountList.map((account) =>
-        account.id === state.selectedAccount.id
+      const updatedAccount = state.accountList.map((account) =>
+        account.id === selectedAccount.id
           ? {
               ...account,
               initialBalance: newBalance,
@@ -301,32 +342,64 @@ export function reducerTransaction(state, action) {
           : account
       );
 
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction)
+      );
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
+
       return {
         ...state,
-        accountList: updatedAccounts,
-        selectedAccount: {
-          ...state.selectedAccount,
-          initialBalance: newBalance,
-          expenseList: [...state.selectedAccount.expenseList, addItem],
-        },
+        allTransactionHistory: getAllTransaction,
+        accountList: updatedAccount,
+        selectedAccount: { ...getSelectedAccount },
         expenseName: "",
         expenseAmount: "",
       };
     }
     case "DELETE_EXPENSE": {
-      const updateExpenseList = state.selectedAccount.expenseList.filter(
+      const selectedAccount = state.selectedAccount;
+      const updateExpenseList = selectedAccount.expenseList.filter(
         (expense) => expense.id !== action.payload
       );
-      console.log(updateExpenseList);
+
+      const updatedAccount = state.accountList.map((account) =>
+        account.id === selectedAccount.id
+          ? {
+              ...account,
+              expenseList: updateExpenseList,
+            }
+          : account
+      );
+
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
       return {
         ...state,
-        selectedAccount: {
-          ...state.selectedAccount,
-          expenseList: updateExpenseList,
-        },
+        selectedAccount: { ...getSelectedAccount },
       };
     }
     default:
-      return initialStateTransaction;
+      return state;
   }
 }

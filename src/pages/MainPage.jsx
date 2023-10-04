@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
-export function MainPage({ state }) {
+export function MainPage({ state, dispatch }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
+
+  const navigate = useNavigate();
+
   return (
     <main className={`main__page ${state.isAddAcc ? "overlay" : ""}`}>
-      <aside className="side__bar">
+      <aside className="side__bar relative">
         <h1 className="logo__title">BANK</h1>
         <div className="menu" onClick={() => setIsOpenLink((open) => !open)}>
           <i className="fa-solid fa-bars-staggered"></i>
@@ -21,13 +24,19 @@ export function MainPage({ state }) {
             <NavLink
               to={`/mainPage/users/${state.selectedAccount?.firstName || ""}`}
             >
-              Users
+              User&apos;s Profile
             </NavLink>
           </li>
           <li>
             <NavLink to="/mainPage/balance">All User Balance</NavLink>
           </li>
         </ul>
+        <button
+          className="absolute text-4xl bottom-20 left-12 uppercase font-bold tracking-[1px]"
+          onClick={() => navigate("/")}
+        >
+          Log Out
+        </button>
       </aside>
 
       <Outlet />

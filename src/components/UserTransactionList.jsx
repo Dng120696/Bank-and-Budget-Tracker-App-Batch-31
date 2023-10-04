@@ -9,7 +9,7 @@ function UserTransactionList({ state, formatBalance }) {
       </ul>
       <div>
         {state.selectedAccount?.userTransactionHistory.length === 0 ? (
-          <p>Add Transaction</p>
+          <p className=" ">Add Transaction</p>
         ) : (
           state.selectedAccount?.userTransactionHistory.map(
             ({ date, id, type, amount }, i) => {
@@ -28,8 +28,8 @@ function UserTransactionList({ state, formatBalance }) {
                   <li
                     className={` text-xl capitalize font-bolds ${
                       type === "widthdraw" || type === "send"
-                        ? "text-red-400"
-                        : "text-green-400"
+                        ? "text-red-500"
+                        : "text-green-500"
                     }`}
                   >
                     {transactionTypes[type] || ""}
@@ -39,8 +39,8 @@ function UserTransactionList({ state, formatBalance }) {
                   <li
                     className={` text-xl justify-self-end self-end ${
                       type === "widthdraw" || type === "send"
-                        ? "text-red-400"
-                        : "text-green-400"
+                        ? "text-red-500"
+                        : "text-green-500"
                     }`}
                   >
                     {type === "widthdraw" || type === "send" ? "-" : "+"}{" "}

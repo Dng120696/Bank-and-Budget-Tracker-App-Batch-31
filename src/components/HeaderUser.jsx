@@ -15,7 +15,7 @@ function HeaderUser({ state, formatBalance }) {
     <>
       <h1 className="user__name">
         {firstName} {lastName}
-        <span className="block text-3xl text-gray-400">Account No:{id}</span>
+        <span className="block text-2xl text-gray-400">Account No:{id}</span>
       </h1>
       <div className="balance">
         <p>

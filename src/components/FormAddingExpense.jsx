@@ -1,39 +1,59 @@
-function FormAddingExpense({ state, dispatch }) {
-  const { expenseName, expenseAmount } = state;
+function FormAddingExpense({ state, onSetExpene, onSetInput }) {
+  const {
+    expenseName,
+    expenseAmount,
+    isexpenseNameError,
+    isexpenseAmountError,
+    expenseNameError,
+    expenseAmountError,
+  } = state;
 
   return (
     <section className="adding__expense-section">
-      <form
-        className="adding__expense"
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch({ type: "EXPENSE_ITEM" });
-        }}
-      >
-        <input
-          type="text"
-          name="expenseName"
-          placeholder="Expense"
-          value={expenseName}
-          onChange={(e) =>
-            dispatch({
-              type: "EXPENSE_NAME",
-              payload: e.target.value,
-            })
-          }
-        />
-        <input
-          type="number"
-          name="expenseAmount"
-          placeholder="Amount"
-          value={expenseAmount}
-          onChange={(e) =>
-            dispatch({
-              type: "AMOUNT",
-              payload: { field: e.target.name, input: +e.target.value },
-            })
-          }
-        />
+      <form className="adding__expense" onSubmit={onSetExpene}>
+        <div className="relative">
+          <input
+            type="text"
+            name="expenseName"
+            placeholder="Expense"
+            className={
+              isexpenseNameError
+                ? "border-1 border-rose-500"
+                : "border-[2px_solid_rgba(0,0,0,0.2)]"
+            }
+            value={expenseName}
+            onChange={onSetInput}
+          />
+          {isexpenseNameError ? (
+            <small className="absolute bottom-[-1.8rem] left-0 text-lg text-red-500">
+              {expenseNameError}
+            </small>
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="relative">
+          <input
+            type="number"
+            name="expenseAmount"
+            placeholder="Amount"
+            className={
+              isexpenseAmountError
+                ? "border-1 border-rose-500"
+                : "border-[2px_solid_rgba(0,0,0,0.2)]"
+            }
+            value={expenseAmount}
+            onChange={onSetInput}
+          />
+          {isexpenseAmountError ? (
+            <small className="absolute bottom-[-1.8rem] left-0 text-lg text-red-500">
+              {expenseAmountError}
+            </small>
+          ) : (
+            ""
+          )}
+        </div>
+
         <button className="btn__add-expense">Add Expense</button>
       </form>
     </section>

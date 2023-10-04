@@ -3,12 +3,13 @@ function UserBalance({ state }) {
     style: "currency",
     currency: "PHP",
   });
+  console.log(state.accountList);
   return (
     <section className="balance__box">
       <div className="user__balance-list">
         <ul className="user__list">
           <li>No.</li>
-          <li>Name</li>
+          <li>Holder&apos;s Name</li>
           <li>Date</li>
           <li>Balance</li>
         </ul>
@@ -17,7 +18,9 @@ function UserBalance({ state }) {
             <li className="ml-4">{i + 1}</li>
             <li>{firstName}</li>
             <li>{date}</li>
-            <li>{formatBalance.format(Number(initialBalance).toFixed(2))}</li>
+            <li className="text-green-500">
+              {formatBalance.format(Number(initialBalance).toFixed(2))}
+            </li>
           </ul>
         ))}
       </div>

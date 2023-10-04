@@ -1,30 +1,40 @@
-function ListOfExpenses({ state, dispatch }) {
+function ListOfExpenses({ state, dispatch, formatBalance }) {
   return (
     <div className="list__expense">
       {state.selectedAccount?.expenseList.length === 0 ? (
         <p>Add Expense</p>
       ) : (
         state.selectedAccount?.expenseList.map(
-          ({ name, amount, date, id }, i) => (
+          ({ name, amount, date, id, isEdit }, i) => (
             <ul key={i} className="expense__item">
               <li>{id}</li>
-              {state.isEdit ? (
-                <input
-                  type="text"
-                  className="input__expense border"
-                  value={state.editExpenseName}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "INPUT_EXPENSE",
-                      payload: e.target.value,
-                    })
-                  }
-                />
+              {isEdit ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    dispatch({ type: "SUBMIT_EDITED_EXPENSE", payload: id });
+                  }}
+                >
+                  <input
+                    type="text"
+                    name="editExpense"
+                    className="input__expense  p-2 w-3/4 border-2"
+                    value={state.editExpenseName}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "INPUT_EXPENSE",
+                        payload: { input: e.target.value, id },
+                      })
+                    }
+                  />
+                </form>
               ) : (
                 <li>{name}</li>
               )}
               <li>{date}</li>
-              <li>P {Number(amount).toFixed(2)}</li>
+              <li className="text-red-500">
+                {"-"} {formatBalance.format(Number(amount).toFixed(2))}
+              </li>
               <div className="expense__buttons">
                 <button
                   onClick={() =>

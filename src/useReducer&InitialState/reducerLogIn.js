@@ -1,34 +1,37 @@
-import { initialStateLogIn } from "./initialStateLogIn";
-
 export function reducerLogIn(state, action) {
   switch (action.type) {
-    case "SET_EMAIL":
-      return { ...state, userNameInput: action.payload, userError: "" };
-    case "SET_PASSWORD":
-      return { ...state, passwordInput: action.payload, passwordError: "" };
-
-    case "LOGIN_FAIL":
+    case "SET_INPUT": {
+      const { field, input } = action.payload;
       return {
         ...state,
-        [action.payload.field + "Error"]: action.payload.message,
-        ["is" + action.payload.field + "Error"]: true,
-        error: "",
+        [field]: input,
+        [`${field}Error`]: "",
+        [`is${field}Error`]: false,
       };
+    }
+    case "LOGIN_FAIL": {
+      const { field, message } = action.payload;
+      return {
+        ...state,
+        [`${field}Error`]: message,
+        [`is${field}Error`]: true,
+        validError: "",
+      };
+    }
     case "LOGIN_INVALID":
       return {
         ...state,
-        error: action.payload,
-        isError: true,
+        validError: action.payload,
+        isvalidError: true,
       };
     case "LOGIN_SUCCESS":
       return {
         ...state,
-        userError: "",
-        passwordError: "",
-        error: "",
+        adminUserError: "",
+        adminPasswordError: "",
+        validError: "",
       };
-
     default:
-      return initialStateLogIn;
+      return state;
   }
 }
