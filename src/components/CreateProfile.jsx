@@ -103,15 +103,17 @@ function CreateProfile({ state, dispatch }) {
     isError ? "border-1 border-rose-500" : "border-[2px_solid_rgba(0,0,0,0.2)]";
   return (
     <div
-      className={`create__account-profile ${
-        state.isAddAcc ? "block" : "hidden"
-      }`}
+      className={`create__account-profile ${state.isOpen ? "block" : "hidden"}`}
     >
       <h1>CREATING ACCOUNT</h1>
       <i
         className="fa-solid fa-xmark text-4xl absolute top-[2rem] right-[2rem] hover:cursor-pointer "
-        onClick={() => dispatch({ type: "ADD_ACCOUNT" })}
-      ></i>
+        onClick={() =>
+          dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false })
+        }
+      >
+        X
+      </i>
       <form id="createProfile" onSubmit={createAccount}>
         <div className="relative">
           <input

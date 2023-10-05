@@ -46,10 +46,18 @@ function AccountDetails({ state, dispatch }) {
           ></i>
         </div>
         {/* <div>{loanList.map((list) => {})}</div> */}
-        <p>
-          {" "}
-          <Link to={`/mainPage/users/${selectedAccount?.firstName}`}></Link>
-        </p>
+        <Link
+          to={`/mainPage/users/${selectedAccount?.firstName}`}
+          onClick={() => {
+            dispatch({ type: "CLOSE_ACCOUNT-DETAILS", payload: false });
+            dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false });
+          }}
+        >
+          <button className=" bg-[#3366FF] text-white py-4 px-12 font-bold tex-txl rounded-md">
+            {" "}
+            Open Account
+          </button>
+        </Link>
       </div>
     </section>
   );

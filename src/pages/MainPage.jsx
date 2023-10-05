@@ -10,9 +10,7 @@ export function MainPage({ state }) {
   return (
     <main
       className={`main__page ${
-        state.isAddAcc || state.isApproved || state.isOpenDetails
-          ? "overlay"
-          : ""
+        state.isOpen || state.isApproved || state.isOpenDetails ? "overlay" : ""
       }`}
     >
       <aside className="side__bar relative">

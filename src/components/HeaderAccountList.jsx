@@ -9,7 +9,7 @@ function HeaderAccountList({ dispatch }) {
       />
       <button
         className="btn btn__add-account"
-        onClick={() => dispatch({ type: "ADD_ACCOUNT" })}
+        onClick={() => dispatch({ type: "OPEN_MODAL-ACCOUNT", payload: true })}
       >
         Add Account
       </button>

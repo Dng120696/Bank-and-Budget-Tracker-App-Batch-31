@@ -39,8 +39,7 @@ export function reducerTransaction(state, action) {
 
     case "CREATE_ACCOUNT":
       return createAccount(state);
-    case "ADD_ACCOUNT":
-      return { ...state, isAddAcc: !state.isAddAcc };
+
     case "DELETE_ACCOUNT": {
       const updateAccount = state.accountList.filter(
         (acc) => acc.id !== action.payload
@@ -58,7 +57,21 @@ export function reducerTransaction(state, action) {
       };
     }
     case "CLOSE_ACCOUNT-DETAILS":
-      return { ...state, isOpenDetails: action.payload };
+      return {
+        ...state,
+        isOpenDetails: action.payload,
+        isOpen: action.payload,
+      };
+    case "CLOSE_MODAL-ACCOUNT":
+      return {
+        ...state,
+        isOpen: action.payload,
+      };
+    case "OPEN_MODAL-ACCOUNT":
+      return {
+        ...state,
+        isOpen: action.payload,
+      };
     case "WIDTHDRAW": {
       const withdrawalAmount = state.amountWidthdraw;
       const selectedAccount = state.selectedAccount;

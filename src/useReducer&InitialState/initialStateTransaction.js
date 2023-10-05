@@ -19,7 +19,7 @@ export const initialStateTransaction = {
   selectedAccount: JSON.parse(localStorage.getItem("selectedAccount")) || null,
   allTransactionHistory:
     JSON.parse(localStorage.getItem("allTransactionHistory")) || [],
-  isAddAcc: false,
+  isOpen: false,
   isEdit: false,
   isaccountHolderFirstNameError: false,
   isaccountHolderLastNameError: false,
