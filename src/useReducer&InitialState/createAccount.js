@@ -12,6 +12,7 @@ export const createAccount = (state) => {
     date: new Intl.DateTimeFormat("en-PH", optionTransact).format(new Date()),
     userTransactionHistory: [],
     expenseList: [],
+    loanList: [],
   };
 
   const updatedAccountList = [...state.accountList, newAccount];

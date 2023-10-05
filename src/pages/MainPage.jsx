@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
-export function MainPage({ state, dispatch }) {
+export function MainPage({ state }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
 
   const navigate = useNavigate();
+  console.log(state.isApproved);
 
   return (
-    <main className={`main__page ${state.isAddAcc ? "overlay" : ""}`}>
+    <main
+      className={`main__page ${
+        state.isAddAcc || state.isApproved || state.isOpenDetails
+          ? "overlay"
+          : ""
+      }`}
+    >
       <aside className="side__bar relative">
         <h1 className="logo__title">BANK</h1>
         <div className="menu" onClick={() => setIsOpenLink((open) => !open)}>

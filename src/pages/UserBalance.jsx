@@ -10,7 +10,7 @@ function UserBalance({ state }) {
         <ul className="user__list">
           <li>No.</li>
           <li>Holder&apos;s Name</li>
-          <li>Date</li>
+          <li>Date Created</li>
           <li>Balance</li>
         </ul>
         {state.accountList.map(({ firstName, initialBalance, date, id }, i) => (

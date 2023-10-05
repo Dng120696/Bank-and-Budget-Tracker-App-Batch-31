@@ -13,14 +13,14 @@ function ListItem({ state, dispatch }) {
             <li>{acc.lastName}</li>
             <li>{acc.email}</li>
             <li className="button__list">
-              <Link
-                to={`/mainPage/users/${acc.firstName}`}
+              <button
                 onClick={() => {
                   dispatch({ type: "SELECTED_ACCOUNT", payload: acc });
                 }}
               >
-                <button>View</button>
-              </Link>
+                View
+              </button>
+
               <button
                 onClick={() =>
                   dispatch({ type: "DELETE_ACCOUNT", payload: acc.id })

@@ -3,16 +3,18 @@ function InputTransaction({
   onWidthdraw,
   onDeposit,
   onSetInput,
-  onRequest,
+  onSetLoan,
 }) {
   const {
-    amountRequest,
     isamountWidthdrawError,
-    amountWidthdrawError,
     isamountDepositError,
+    isamountLoanError,
+    amountWidthdrawError,
     amountDepositError,
+    amountLoanError,
     amountWidthdraw,
     amountDeposit,
+    amountLoan,
   } = state;
 
   return (
@@ -61,14 +63,26 @@ function InputTransaction({
         )}
         <button>Deposit</button>
       </form>
-      <form className="request__form" onSubmit={onRequest}>
+      <form className="request__form relative" onSubmit={onSetLoan}>
         <input
           type="number"
-          name="requestAmount"
+          name="amountLoan"
           placeholder="Amount"
-          value={amountRequest}
+          className={
+            isamountLoanError
+              ? "border-1 border-rose-500"
+              : "border-[2px_solid_rgba(0,0,0,0.2)]"
+          }
+          value={amountLoan}
           onChange={onSetInput}
         />
+        {isamountLoanError ? (
+          <small className="absolute bottom-[-1.8rem] left-0 text-lg text-red-500">
+            {amountLoanError}
+          </small>
+        ) : (
+          ""
+        )}
         <button>Request Loan</button>
       </form>
     </section>

@@ -36,14 +36,7 @@ export function reducerTransaction(state, action) {
         [`is${field}Error`]: true,
       };
     }
-    case "NOT_STARTWITHNUMBER": {
-      const { field, message } = action.payload;
-      return {
-        ...state,
-        [`${field}Error`]: message,
-        [`is${field}Error`]: true,
-      };
-    }
+
     case "CREATE_ACCOUNT":
       return createAccount(state);
     case "ADD_ACCOUNT":
@@ -58,9 +51,14 @@ export function reducerTransaction(state, action) {
     }
     case "SELECTED_ACCOUNT": {
       localStorage.setItem("selectedAccount", JSON.stringify(action.payload));
-      return { ...state, selectedAccount: action.payload };
+      return {
+        ...state,
+        selectedAccount: action.payload,
+        isOpenDetails: !state.isOpenDetails,
+      };
     }
-
+    case "CLOSE_ACCOUNT-DETAILS":
+      return { ...state, isOpenDetails: action.payload };
     case "WIDTHDRAW": {
       const withdrawalAmount = state.amountWidthdraw;
       const selectedAccount = state.selectedAccount;
@@ -76,9 +74,8 @@ export function reducerTransaction(state, action) {
         amount: withdrawalAmount,
       };
 
-      const updatedAccount = state.accountList.map((account) => {
-        console.log(account);
-        return account.id === selectedAccount.id
+      const updatedAccount = state.accountList.map((account) =>
+        account.id === selectedAccount.id
           ? {
               ...account,
               initialBalance: newBalance,
@@ -87,8 +84,8 @@ export function reducerTransaction(state, action) {
                 ...state.selectedAccount.userTransactionHistory,
               ],
             }
-          : account;
-      });
+          : account
+      );
 
       const getAllTransaction = updatedAccount.flatMap((acc) => [
         ...acc.userTransactionHistory,
@@ -173,6 +170,78 @@ export function reducerTransaction(state, action) {
         amountDeposit: "",
       };
     }
+
+    case "IS_APPROVED":
+      return {
+        ...state,
+        isApproved: action.payload,
+      };
+    case "REJECT":
+      return {
+        ...state,
+        amountLoan: "",
+        loanTerms: "",
+      };
+    case "SET_LOAN-TERMS":
+      return { ...state, loanTerms: action.payload };
+    case "LOAN": {
+      const insuranceBank = Math.round(
+        (state.amountLoan * 1.25 * state.loanTerms) / 1000
+      );
+      const loanAmount = state.amountLoan - insuranceBank;
+      console.log(loanAmount);
+      const selectedAccount = state.selectedAccount;
+      const newBalance = +selectedAccount.initialBalance + +loanAmount;
+
+      const loanTransaction = {
+        type: "loan",
+        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
+          new Date()
+        ),
+        name: selectedAccount.firstName,
+        id: state.selectedAccount.userTransactionHistory.length + 1,
+        amount: loanAmount,
+      };
+
+      const updatedAccount = state.accountList.map((account) =>
+        account.id === selectedAccount.id
+          ? {
+              ...account,
+              initialBalance: newBalance,
+              userTransactionHistory: [
+                loanTransaction,
+                ...state.selectedAccount.userTransactionHistory,
+              ],
+            }
+          : account
+      );
+      const getSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction)
+      );
+      localStorage.setItem("account", JSON.stringify(updatedAccount));
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify({ ...getSelectedAccount })
+      );
+
+      return {
+        ...state,
+        accountList: updatedAccount,
+        allTransactionHistory: getAllTransaction,
+        selectedAccount: { ...getSelectedAccount },
+        amountLoan: "",
+        loanTerms: "",
+      };
+    }
     case "SEND_MONEY": {
       const receiver = state.accountList.find(
         (acc) => acc.id === state.receiverId
@@ -254,7 +323,7 @@ export function reducerTransaction(state, action) {
       const updateExpenseName = state.selectedAccount.expenseList.map(
         (expense) =>
           expense.id === action.payload.id
-            ? { ...expense, name: action.payload.input }
+            ? { ...expense, expenseName: action.payload.input }
             : expense
       );
 

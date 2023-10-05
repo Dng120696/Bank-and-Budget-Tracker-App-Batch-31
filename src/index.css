@@ -31,7 +31,7 @@ body {
   backdrop-filter: blur(3px);
 }
 .side__bar {
-  @apply bg-[#3366FF] h-24 px-8 lg:px-12 lg:pt-16 mb-12 lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-yellow-50 lg:h-screen z-10;
+  @apply bg-[#3366FF] h-24 px-8 lg:px-12 lg:pt-16 mb-12 lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-yellow-50 lg:h-screen z-[1];
   box-shadow: 0 0 25px 5px #adc8ff;
   font-family: "Black Ops One", cursive;
 }
@@ -72,13 +72,14 @@ body {
 .transaction__history,
 .user__balance-list,
 .dashboard {
-  @apply p-10 pt-5 relative w-[clamp(80rem,80vw,90rem)] h-[90vh] mx-auto;
+  @apply p-8 relative w-[clamp(80rem,80vw,90rem)] h-[90vh] mx-auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .create__account {
-  @apply mt-10;
+  @apply m-auto h-[60vh];
 }
 .user__account {
+  @apply m-auto;
   box-shadow: none;
 }
 .create__account > h1 {
@@ -97,6 +98,7 @@ body {
   transition: 300ms;
 }
 .account__list {
+  @apply h-[82%];
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .account__list > ul:first-child {
@@ -106,7 +108,7 @@ body {
   @apply self-center;
 }
 .list__item {
-  @apply h-[65vh] overflow-y-scroll;
+  @apply h-full overflow-y-scroll;
 }
 .list__item > p {
   @apply flex items-center justify-center w-full text-3xl font-bold text-[hsl(0,0%,60%)];
@@ -240,10 +242,10 @@ body {
   height: 100%;
 }
 .header__transaction {
-  @apply grid  grid-cols-[.25fr,1fr,1.5fr,1fr] text-left text-xl font-bold bg-[#4573ff] text-white py-4 px-2;
+  @apply grid  grid-cols-[.3fr,0.8fr,1.5fr,1fr] text-left text-xl font-bold bg-[#4573ff] text-white py-4 px-2;
 }
 .user-transaction__history {
-  @apply text-left grid-cols-[.5fr,1fr,1.5fr,1fr] grid mb-4 pb-4;
+  @apply text-left grid-cols-[.3fr,0.8fr,1.5fr,1fr] grid mb-4 pb-4;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -262,19 +264,18 @@ body {
   @apply grid  grid-cols-[0.5fr,1.5fr,1.5fr,1fr]  text-xl font-bold items-center content-center bg-[#4573ff] text-white py-4 px-2;
 }
 .expense__item {
-  @apply grid grid-cols-[0.5fr,1.5fr,1.5fr,1fr] relative text-xl py-4 mb-4;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  @apply grid grid-cols-[0.5fr,1.5fr,1.5fr,1fr] relative text-xl py-3 mb-3;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .expense__item .expense__buttons {
-  @apply absolute right-10 top-1/2 translate-x-[-50%] translate-y-[-50%] flex gap-4 text-xl opacity-0;
+  @apply absolute right-10 top-1/2 translate-x-[-50%] translate-y-[-50%] flex gap-4 text-2xl opacity-0;
   transition: 300ms;
 }
 .expense__item:hover .expense__buttons {
   @apply opacity-80;
   transition: 300ms;
 }
-.input__expense {
-}
+
 .adding__expense {
   @apply grid grid-cols-3 gap-12;
 }

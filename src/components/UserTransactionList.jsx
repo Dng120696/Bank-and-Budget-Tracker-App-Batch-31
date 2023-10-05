@@ -19,6 +19,7 @@ function UserTransactionList({ state, formatBalance }) {
                 received: "received",
                 deposit: "deposit",
                 deduct: "deduct",
+                loan: "loan",
               };
 
               return (
@@ -26,7 +27,7 @@ function UserTransactionList({ state, formatBalance }) {
                   <li className="text-gray-600 text-xl">{id}</li>
 
                   <li
-                    className={` text-xl capitalize font-bolds ${
+                    className={` text-xl capitalize font-bolds pl-8 font-bold ${
                       type === "widthdraw" || type === "send"
                         ? "text-red-500"
                         : "text-green-500"
@@ -34,10 +35,10 @@ function UserTransactionList({ state, formatBalance }) {
                   >
                     {transactionTypes[type] || ""}
                   </li>
-                  <li className="text-md text-gray-400">{date}</li>
+                  <li className="text-lg text-gray-400 pl-4">{date}</li>
 
                   <li
-                    className={` text-xl justify-self-end self-end ${
+                    className={` text-xl justify-self-end self-end font-bold ${
                       type === "widthdraw" || type === "send"
                         ? "text-red-500"
                         : "text-green-500"

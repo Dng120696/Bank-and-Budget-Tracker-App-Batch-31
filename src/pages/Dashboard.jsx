@@ -39,7 +39,7 @@ function Dashboard({ state }) {
           <ul className="grid grid-cols-[0.5fr,1.25fr,1.25fr,1fr,1.5fr,1fr] bg-[#4573ff] text-2xl text-white p-4 ">
             <li>No.</li>
             <li>Account Name</li>
-            <li>Expene Name</li>
+            <li>Expense Name</li>
             <li>Status</li>
             <li>Date</li>
             <li>Amount</li>

@@ -1,6 +1,7 @@
 import ListItem from "../components/ListItem";
 import CreateProfile from "../components/CreateProfile";
 import HeaderAccountList from "../components/HeaderAccountList";
+import AccountDetails from "../components/AccountDetails";
 
 export function CreateAccount({ state, dispatch }) {
   return (
@@ -18,6 +19,9 @@ export function CreateAccount({ state, dispatch }) {
         <ListItem state={state} dispatch={dispatch} />
       </section>
       <CreateProfile dispatch={dispatch} state={state} />
+      {state.isOpenDetails && (
+        <AccountDetails state={state} dispatch={dispatch} />
+      )}
     </section>
   );
 }

@@ -29,10 +29,7 @@ function App() {
         path="/"
         element={<LogInPage state={stateLogIn} dispatch={dispatchLogIn} />}
       />
-      <Route
-        path="/mainPage"
-        element={<MainPage state={stateTransact} dispatch={dispatchLogIn} />}
-      >
+      <Route path="/mainPage" element={<MainPage state={stateTransact} />}>
         <Route index element={<DashBoard />} />
         <Route path="dashboard" element={<DashBoard state={stateTransact} />} />
         <Route
@@ -48,9 +45,8 @@ function App() {
               <Users state={stateTransact} dispatch={dispatchTransact} />
             ) : (
               <p className="absolute top-1/2 left-[60%] translate-x-[-50%] translate-y-[-50%] grid place-items-center w-[80rem] h-[80vh] shadow-[0_0_1rem_rgba(0,0,0,0.3)] text-3xl font-bold">
-                Need to{" "}
                 <span
-                  className="goTo__account absolute text-3xl right-[29%] hover:cursor-pointer text-gray-600"
+                  className="goTo__account absolute text-3xl right-[50%] hover:cursor-pointer text-gray-600"
                   onClick={() => navigate("/mainPage/accounts")}
                 >
                   Select User <i className="fa-solid fa-angles-right "></i>

@@ -5,7 +5,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
         <p>Add Expense</p>
       ) : (
         state.selectedAccount?.expenseList.map(
-          ({ name, amount, date, id, isEdit }, i) => (
+          ({ expenseName, amount, date, id, isEdit }, i) => (
             <ul key={i} className="expense__item">
               <li>{id}</li>
               {isEdit ? (
@@ -29,7 +29,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
                   />
                 </form>
               ) : (
-                <li>{name}</li>
+                <li>{expenseName}</li>
               )}
               <li>{date}</li>
               <li className="text-red-500">
