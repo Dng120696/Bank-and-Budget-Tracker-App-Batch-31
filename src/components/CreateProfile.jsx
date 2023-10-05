@@ -75,6 +75,10 @@ function CreateProfile({ state, dispatch }) {
           if (!validateInput(field, regexNotNegative, "Invalid Input")) {
             return;
           }
+          if (!(state[field] % 1000 === 0)) {
+            handleError(field, "Invalid Amount");
+            return;
+          }
           if (state[field] < 1000) {
             handleError(field, "Must be greater than 1000");
             return;
@@ -111,9 +115,7 @@ function CreateProfile({ state, dispatch }) {
         onClick={() =>
           dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false })
         }
-      >
-        X
-      </i>
+      ></i>
       <form id="createProfile" onSubmit={createAccount}>
         <div className="relative">
           <input

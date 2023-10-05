@@ -27,7 +27,7 @@ export const createAccount = (state) => {
     accountInitialBalance: "",
     birthDate: "",
     email: "",
-    isAddAcc: false,
+    isOpen: false,
     isaccountHolderFirstNameError: false,
     isaccountHolderLastNameError: false,
     isaccountInitialBalanceError: false,
