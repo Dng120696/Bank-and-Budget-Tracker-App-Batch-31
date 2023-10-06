@@ -4,7 +4,7 @@ function Dashboard({ state, formatBalance }) {
   const transactionTypes = ["widthdraw", "deposit", "loan"];
 
   const summary = transactionTypes.reduce((acc, type) => {
-    const totalAmount = state.allTransactionHistory
+    const totalAmount = state?.allTransactionHistory
       .filter((transact) => transact.type === type)
       .reduce((sum, transact) => sum + +transact.amount, 0);
 
@@ -34,7 +34,7 @@ function Dashboard({ state, formatBalance }) {
                 Total Widthdraw
               </span>
               <span className="text-red-500 font-bold block mt-4 text-4xl">
-                {formatBalance.format(widthdraw)}
+                {formatBalance?.format(widthdraw)}
               </span>
             </p>
           </div>
@@ -44,7 +44,7 @@ function Dashboard({ state, formatBalance }) {
                 Total Deposit
               </span>
               <span className="text-green-600 font-bold block mt-4 text-4xl">
-                {formatBalance.format(deposit)}
+                {formatBalance?.format(deposit)}
               </span>
             </p>
           </div>
@@ -54,7 +54,7 @@ function Dashboard({ state, formatBalance }) {
                 Total Loan
               </span>
               <span className="text-green-800 font-bold block mt-4 text-4xl">
-                {formatBalance.format(loan)}
+                {formatBalance?.format(loan)}
               </span>
             </p>
           </div>

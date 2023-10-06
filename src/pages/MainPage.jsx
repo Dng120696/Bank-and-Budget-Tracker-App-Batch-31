@@ -3,10 +3,8 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logos from "../assets/logo.png";
 export function MainPage({ state }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
-
   const navigate = useNavigate();
-  const checkSelected =
-    state.selectedAccount === null || state.selectedAccount === "";
+
   return (
     <main
       className={`main__page ${
