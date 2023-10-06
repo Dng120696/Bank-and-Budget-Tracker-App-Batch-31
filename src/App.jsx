@@ -1,5 +1,5 @@
-import { useReducer } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useReducer } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { initialStateLogIn } from "./useReducer&InitialState/initialStateLogIn";
 import { initialStateTransaction } from "./useReducer&InitialState/initialStateTransaction";
@@ -25,6 +25,16 @@ function App() {
     style: "currency",
     currency: "PHP",
   });
+  const nagivate = useNavigate();
+
+  useEffect(() => {
+    if (
+      stateTransact?.selectedAccount === null ||
+      stateTransact?.selectedAccount === ""
+    ) {
+      nagivate("/mainPage/users");
+    }
+  }, []);
 
   return (
     <Routes>

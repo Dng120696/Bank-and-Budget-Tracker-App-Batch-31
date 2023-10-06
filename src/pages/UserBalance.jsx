@@ -22,10 +22,10 @@ function UserBalance({ state }) {
             state.accountList.map(
               ({ firstName, initialBalance, date, id }, i) => (
                 <ul key={id} className="list">
-                  <li className="ml-4">{i + 1}</li>
+                  <li>{i + 1}</li>
                   <li>{firstName}</li>
                   <li>{date}</li>
-                  <li className="text-green-500">
+                  <li className="text-green-600">
                     {formatBalance.format(Number(initialBalance).toFixed(2))}
                   </li>
                 </ul>

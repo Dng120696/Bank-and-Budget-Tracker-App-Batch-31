@@ -48,15 +48,17 @@ export function Users({ state, dispatch }) {
       handleEmptyInput(field, "Can't be Empty");
       return;
     }
-    if (state[field] > state?.selectedAccount.initialBalance) {
-      handleEmptyInput(field, "Not Enough Balance");
-      return;
-    }
+
     if (!validateInput(field, regexNotNegative, "Invalid Input")) {
       return;
     }
     if (state[field] < 1000) {
       handleEmptyInput(field, "Must be greater than 1000");
+      return;
+    }
+
+    if (state[field] > state?.selectedAccount.initialBalance) {
+      handleEmptyInput(field, "Not Enough Balance");
       return;
     }
     if (!(state[field] % 1000 === 0)) {

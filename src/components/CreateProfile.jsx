@@ -75,12 +75,12 @@ function CreateProfile({ state, dispatch }) {
           if (!validateInput(field, regexNotNegative, "Invalid Input")) {
             return;
           }
-          if (!(state[field] % 1000 === 0)) {
-            handleError(field, "Invalid Amount");
-            return;
-          }
           if (state[field] < 1000) {
             handleError(field, "Must be greater than 1000");
+            return;
+          }
+          if (!(state[field] % 1000 === 0)) {
+            handleError(field, "Invalid Amount");
             return;
           }
           break;

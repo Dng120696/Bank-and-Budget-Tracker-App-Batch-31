@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import profilelogo from "../assets/profilelogo.png";
 
 function AccountDetails({ state, dispatch, formatBalance }) {
   const { selectedAccount } = state;
   const [isOpenPass, setIsOpenPass] = useState(false);
+
+  const options = { year: "numeric", month: "long", day: "numeric" };
+
   return (
-    <section className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-full md:h-[51rem] shadow-[0_0_1rem_rgba(0,0,0,0.3)] bg-white z-50 py-12 pt-20 px-10 rounded-md">
+    <section className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-full md:h-[55rem] shadow-[0_0_1rem_rgba(0,0,0,0.3)] bg-white z-50 py-12 pt-20 px-10 rounded-md">
       <i
         className="fa-solid fa-xmark text-4xl absolute right-10 top-8 hover:cursor-pointer hover:text-gray-400 "
         onClick={() =>
@@ -15,14 +19,22 @@ function AccountDetails({ state, dispatch, formatBalance }) {
 
       <>
         <div className="flex items-center justify-between mb-8">
-          <p className="text-4xl font-bold text-gray-900">
-            {selectedAccount?.firstName} {selectedAccount?.lastName}
-            <span className="block text-xl mt-2 ">
-              Account No.{" "}
-              <span className="text-gray-500">{selectedAccount?.id}</span>
-            </span>
-          </p>
-          <p className="text-4xl text-green-600 font-medium">
+          <div className="flex gap-6 items-center">
+            <img
+              src={profilelogo}
+              alt="profile"
+              className="w-32 rounded-full"
+            />
+            <p className="text-5xl font-bold text-gray-900">
+              {selectedAccount?.firstName} {selectedAccount?.lastName}
+              <span className="block text-2xl mt-2 text-gray-500 ">
+                Account No.{" "}
+                <span className="text-gray-500">{selectedAccount?.id}</span>
+              </span>
+            </p>
+          </div>
+
+          <p className="text-5xl text-green-600 font-medium">
             {formatBalance.format(selectedAccount?.initialBalance)}
           </p>
         </div>
@@ -31,7 +43,10 @@ function AccountDetails({ state, dispatch, formatBalance }) {
           <p className=" font-bold text-gray-500">{selectedAccount?.date}</p>
           <p className=" text-gray-400">Birth Date</p>
           <p className=" font-bold text-gray-500">
-            {selectedAccount?.birthDate}
+            {new Date(selectedAccount?.birthDate).toLocaleDateString(
+              undefined,
+              options
+            )}
           </p>
           <p className=" text-gray-400">Email</p>
           <p className=" font-bold text-gray-500">{selectedAccount?.email}</p>
@@ -52,7 +67,7 @@ function AccountDetails({ state, dispatch, formatBalance }) {
           </div>
         </div>
         <div>
-          <ul className=" grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] bg-[#3366FF] md:text-lg xl:text-xl py-4  text-white font-bold">
+          <ul className=" grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] bg-blue-600 md:text-lg xl:text-xl py-4  text-white font-bold">
             <li className="pl-4">No.</li>
             <li>Date</li>
             <li>Principal Loan</li>
@@ -112,13 +127,13 @@ function AccountDetails({ state, dispatch, formatBalance }) {
 
         <div className="text-right">
           <Link
-            to={`/mainPage/users/${selectedAccount?.firstName}`}
+            to={`/mainPage/users/${selectedAccount.firstName || ""}`}
             onClick={() => {
               dispatch({ type: "CLOSE_ACCOUNT-DETAILS", payload: false });
               dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false });
             }}
           >
-            <button className=" bg-[#3366FF] text-white py-4 px-12 font-bold text-xl rounded-md ">
+            <button className=" bg-blue-600 text-white py-4 px-12 font-bold text-xl rounded-md ">
               {" "}
               Open Account
             </button>
