@@ -3,7 +3,7 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&display=swap");
 html {
   font-size: 62.5%;
   box-sizing: border-box;
@@ -13,15 +13,14 @@ html {
   padding: 0;
   outline: none;
   box-sizing: inherit;
+  font-family: "Kumbh Sans", sans-serif;
 }
 body {
-  font-family: "Kumbh Sans", sans-serif;
-
   min-height: 100vh;
   overflow: hidden;
 }
 .main__page {
-  @apply lg:grid lg:grid-cols-[30rem,auto] gap-6;
+  @apply md:grid md:grid-cols-[30rem,auto] gap-6 bg-gray-100;
 }
 .overlay::before {
   content: "";
@@ -31,12 +30,12 @@ body {
   backdrop-filter: blur(3px);
 }
 .side__bar {
-  @apply bg-[#3366FF] h-24 px-8 lg:px-12 lg:pt-16 mb-12 lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-yellow-50 lg:h-screen z-[1];
-  box-shadow: 0 0 25px 5px #adc8ff;
+  @apply bg-white h-24 px-8 md:px-12 md:pt-16 mb-12 md:mb-0 flex justify-between items-center md:flex-col md:gap-12 md:items-start md:justify-start relative text-[#3366FF] md:h-screen z-[1];
+  box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.1);
   font-family: "Black Ops One", cursive;
 }
 .logo__title {
-  @apply text-3xl lg:text-7xl pb-10;
+  @apply text-3xl md:text-7xl pb-10;
   border-bottom: 1px solid #fff;
   letter-spacing: 3px;
   font-family: "Black Ops One", cursive;
@@ -45,7 +44,7 @@ body {
   opacity: 0;
   transform: scale(0, 0) translateX(-10rem);
   transform-origin: top right;
-  @apply absolute lg:relative left-0 flex bottom-[-16.5rem] lg:bottom-0 w-full p-10 items-center lg:items-start justify-between lg:justify-end flex-col gap-6 bg-[#3366FF] lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0;
+  @apply absolute md:relative left-0 flex bottom-[-16.5rem] md:bottom-0 w-full p-10 items-center md:items-start justify-between md:justify-end flex-col gap-6 bg-[#3366FF] md:opacity-100 md:scale-[1] md:translate-x-0 md:bg-transparent md:p-0;
   transition: all 600ms;
 }
 .open__link {
@@ -54,30 +53,31 @@ body {
   transition: all 600ms;
 }
 .link__item a {
-  @apply text-xl md:text-2xl lg:text-3xl uppercase;
+  @apply text-xl md:text-3xl uppercase font-bold;
 }
 .link__item a.active {
-  @apply text-[#3366FF] relative;
+  @apply text-white relative;
 }
 .link__item a.active::after {
   content: "";
-  @apply absolute top-1/2 left-[12.5rem] translate-x-[-50%] translate-y-[-50%] bg-slate-50 h-16 w-[29rem] z-[-1];
+  @apply absolute top-1/2 left-[12.5rem] translate-x-[-50%] translate-y-[-50%] bg-blue-500 h-16 w-[29rem] z-[-1];
   border-radius: 5rem 0 0 5rem;
 }
 .menu {
-  @apply text-3xl lg:hidden;
+  @apply text-3xl md:hidden;
 }
 .create__account,
 .user__account,
 .transaction__history,
 .user__balance-list,
 .dashboard {
-  @apply p-8 relative w-[clamp(80rem,80vw,90rem)] h-[90vh] mx-auto;
+  @apply p-8 relative w-[clamp(70rem,90%,90rem)] h-[90vh] mx-auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .create__account {
-  @apply m-auto h-[60vh];
+  @apply m-auto h-[60rem] bg-white;
 }
+
 .user__account {
   @apply m-auto;
   box-shadow: none;
@@ -86,11 +86,10 @@ body {
   @apply text-4xl font-bold tracking-[2px] mb-8;
 }
 .header__account {
-  @apply flex justify-between items-center mb-8;
+  @apply flex justify-between items-center mb-10;
 }
 .input__search {
-  @apply w-1/2 p-3 text-xl rounded-md;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  @apply w-full p-3 text-xl rounded-md pl-16;
 }
 .btn__add-account {
   height: inherit;
@@ -98,7 +97,7 @@ body {
   transition: 300ms;
 }
 .account__list {
-  @apply h-[82%];
+  @apply h-[45rem];
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .account__list > ul:first-child {
@@ -108,10 +107,11 @@ body {
   @apply self-center;
 }
 .list__item {
-  @apply h-full overflow-y-scroll;
+  @apply overflow-y-scroll h-[92%];
 }
 .list__item > p {
-  @apply flex items-center justify-center w-full text-3xl font-bold text-[hsl(0,0%,60%)];
+  @apply flex items-center justify-center w-full text-3xl  
+  text-gray-300 font-bold;
   height: inherit;
 }
 .list__item .list {
@@ -142,6 +142,9 @@ body {
   @apply w-full py-3 pr-3 mb-8 text-[1.6rem];
   /* border-bottom: 2px solid rgba(0, 0, 0, 0.1); */
 }
+#inputDate::placeholder {
+  @apply text-gray-400;
+}
 #inputBalance {
   @apply mb-12;
 }
@@ -165,7 +168,7 @@ body {
   @apply text-5xl font-bold;
 }
 .section__transact {
-  @apply grid grid-cols-[1.25fr,1fr] gap-6 p-8 mb-8;
+  @apply grid grid-cols-[1.25fr,1fr] gap-6 p-8 mb-8 bg-white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -217,18 +220,24 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .list__item::-webkit-scrollbar,
+.loan__list::-webkit-scrollbar,
+.balance__list::-webkit-scrollbar,
 .transaction__box::-webkit-scrollbar,
 .list__expense::-webkit-scrollbar,
 .user__transaction > div::-webkit-scrollbar {
   width: 1rem;
 }
 .list__item::-webkit-scrollbar-track,
+.loan__list::-webkit-scrollbar-track,
+.balance__list::-webkit-scrollbar-track,
 .transaction__box::-webkit-scrollbar-track,
 .list__expense::-webkit-scrollbar-track,
 .user__transaction > div::-webkit-scrollbar-track {
   background: transparent;
 }
 .list__item::-webkit-scrollbar-thumb,
+.loan__list::-webkit-scrollbar-thumb,
+.balance__list::-webkit-scrollbar-thumb,
 .transaction__box::-webkit-scrollbar-thumb,
 .list__expense::-webkit-scrollbar-thumb,
 .user__transaction > div::-webkit-scrollbar-thumb {
@@ -250,7 +259,7 @@ body {
 }
 
 .expense__list {
-  @apply grid grid-cols-1 p-8;
+  @apply grid grid-cols-1 p-8 bg-white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .expense__list h2 {
@@ -292,12 +301,15 @@ input {
   @apply grid place-items-center px-10 w-[clamp(80rem,80vw,90rem)] mx-auto;
 }
 .user__balance-list {
-  @apply h-[50vh] w-full;
+  @apply h-[50vh] w-full bg-white;
 }
 .user__list {
-  @apply grid grid-cols-[1fr,1.5fr,2fr,1fr] bg-[#4573ff] mb-4 text-white p-4  text-3xl font-bold;
+  @apply grid grid-cols-[1fr,1.5fr,2fr,1fr] bg-[#4573ff] text-white p-4  text-3xl font-bold;
 }
 .balance__list {
+  @apply border-[2px] border-t-0 h-[40vh] p-2 overflow-y-scroll;
+}
+.list {
   @apply grid  grid-cols-[1fr,1.5fr,2fr,1fr] mb-4 pb-2 text-2xl pl-4;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }

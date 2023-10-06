@@ -1,5 +1,6 @@
 export const initialStateTransaction = {
   accountList: JSON.parse(localStorage.getItem("account")) || [],
+  filteredAccount: [],
   accountHolderFirstName: "",
   accountHolderLastName: "",
   accountInitialBalance: "",
@@ -16,6 +17,7 @@ export const initialStateTransaction = {
   editExpenseName: "",
   expenseAmount: "",
   loanTerms: "",
+  searchQuery: "",
   selectedAccount: JSON.parse(localStorage.getItem("selectedAccount")) || null,
   allTransactionHistory:
     JSON.parse(localStorage.getItem("allTransactionHistory")) || [],
@@ -37,6 +39,8 @@ export const initialStateTransaction = {
   isApproved: false,
   isOpenApproved: false,
   isOpenDetails: false,
+  issearchQueryError: false,
+  searchQueryError: "",
   amountWidthdrawError: "",
   amountDepositError: "",
   amountLoanError: "",

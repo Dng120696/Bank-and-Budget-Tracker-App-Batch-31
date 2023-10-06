@@ -40,11 +40,44 @@ export function reducerTransaction(state, action) {
     case "CREATE_ACCOUNT":
       return createAccount(state);
 
+    case "SEARCH_ACCOUNT": {
+      const query = action.payload.toLowerCase();
+
+      const filteredAccount = query
+        ? state.accountList.filter((acc) =>
+            acc.firstName.toLowerCase().includes(query)
+          )
+        : state.accountList;
+      console.log(filteredAccount);
+      return {
+        ...state,
+        filteredAccount,
+      };
+    }
     case "DELETE_ACCOUNT": {
-      const updateAccount = state.accountList.filter(
-        (acc) => acc.id !== action.payload
+      const deletedAccountId = action.payload;
+      const updateAccount = state?.accountList.filter(
+        (acc) => acc.id !== deletedAccountId
       );
       localStorage.setItem("account", JSON.stringify(updateAccount));
+
+      const updateSelectedAccount =
+        state?.selectedAccount?.id === deletedAccountId
+          ? null
+          : state?.selectedAccount;
+      // const updateAllTransaction =
+      // const getSelectedAccount = updateAccount.find(
+      //   (acc) => acc?.id === state.selectedAccount?.id
+      // );
+
+      localStorage.setItem(
+        "selectedAccount",
+        JSON.stringify(updateSelectedAccount)
+      );
+      // localStorage.setItem(
+      //   "allTransactionHistory",
+      //   JSON.stringify(updatedAllTransactionHistory)
+      // );
 
       return { ...state, accountList: updateAccount };
     }
@@ -198,14 +231,24 @@ export function reducerTransaction(state, action) {
     case "SET_LOAN-TERMS":
       return { ...state, loanTerms: action.payload };
     case "LOAN": {
-      const insuranceBank = Math.round(
+      const totalDeduction = Math.round(
         (state.amountLoan * 1.25 * state.loanTerms) / 1000
       );
-      const loanAmount = state.amountLoan - insuranceBank;
+      const loanAmount = state.amountLoan - totalDeduction;
       console.log(loanAmount);
       const selectedAccount = state.selectedAccount;
       const newBalance = +selectedAccount.initialBalance + +loanAmount;
+      const { loanTerms, amountLoan } = state;
+      const calculateInterest =
+        amountLoan && loanTerms
+          ? Math.round(
+              amountLoan *
+                (loanTerms === 6 ? 0.16 : loanTerms === 12 ? 0.28 : 0.48)
+            )
+          : "N/A";
 
+      const totalLoan = +amountLoan + +calculateInterest;
+      const paymentPermonth = totalLoan / loanTerms;
       const loanTransaction = {
         type: "loan",
         date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
@@ -214,6 +257,13 @@ export function reducerTransaction(state, action) {
         name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: loanAmount,
+        principalLoan: state.amountLoan,
+        loanTerms,
+        paymentPermonth,
+        interestRate:
+          loanTerms === 6 ? "16%" : loanTerms === 12 ? "28%" : "48%",
+        totalInterest: calculateInterest,
+        totalLoan,
       };
 
       const updatedAccount = state.accountList.map((account) =>
@@ -225,6 +275,7 @@ export function reducerTransaction(state, action) {
                 loanTransaction,
                 ...state.selectedAccount.userTransactionHistory,
               ],
+              loanList: [...account.loanList, loanTransaction],
             }
           : account
       );

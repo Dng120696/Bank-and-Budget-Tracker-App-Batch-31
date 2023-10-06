@@ -22,6 +22,7 @@ export const createAccount = (state) => {
   return {
     ...state,
     accountList: updatedAccountList,
+    filteredAccount: updatedAccountList,
     accountHolderFirstName: "",
     accountHolderLastName: "",
     accountInitialBalance: "",

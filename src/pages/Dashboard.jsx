@@ -1,15 +1,10 @@
 import logo from "../assets/dashboardimg.png";
 
-function Dashboard({ state }) {
-  const formatBalance = new Intl.NumberFormat("en-PH", {
-    style: "currency",
-    currency: "PHP",
-  });
-
+function Dashboard({ state, formatBalance }) {
   return (
     <section className=" dashboard__section">
       <div className="dashboard">
-        <div className="p-10 relative shadow-[0_0_10px_rgba(0,0,0,.1)] h-[35%] mb-12">
+        <div className="p-10 relative shadow-[0_0_10px_rgba(0,0,0,.1)] h-[35%] mb-12 bg-white">
           <h1 className=" text-5xl mb-6 font-bold">
             Welcome Back <span className=" text-blue-500">Patrick!</span>{" "}
           </h1>
@@ -24,18 +19,18 @@ function Dashboard({ state }) {
           <img src={logo} alt="logo" className="w-96 absolute top-0 right-24" />
         </div>
         <div className=" h-[15%] w-full grid grid-cols-3 gap-10 mb-12">
-          <div className="shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
             Total Widthdraw ,Expense and Send Money
           </div>
-          <div className="shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
             Total Deposit and Receive
           </div>
-          <div className="shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full">
             Total Loan
           </div>
         </div>
 
-        <div className=" shadow-[0_0_10px_rgba(0,0,0,.1)] ">
+        <div className=" shadow-[0_0_10px_rgba(0,0,0,.1)] bg-white ">
           <ul className="grid grid-cols-[0.5fr,1.25fr,1.25fr,1fr,1.5fr,1fr] bg-[#4573ff] text-2xl text-white p-4 ">
             <li>No.</li>
             <li>Account Name</li>
@@ -45,45 +40,51 @@ function Dashboard({ state }) {
             <li>Amount</li>
           </ul>
           <div className="transaction__box w-full h-[20rem]  rounded-md overflow-y-scroll pl-6 pr-4">
-            {state?.allTransactionHistory.map(
-              ({ date, name, expenseName, type, amount }, i) => (
-                <ul
-                  key={i}
-                  className="transaction__list grid grid-cols-[0.5fr,1.25fr,1.25fr,1fr,1.5fr,1fr]"
-                >
-                  <li>{i + 1}</li>
-                  <li>{name}</li>
-                  <li>{expenseName || "N/A"}</li>
-                  <li
-                    className={
-                      type === "widthdraw" ||
+            {state?.allTransactionHistory.length === 0 ? (
+              <p className="flex items-center justify-center text-gray-300 font-bold text-2xl h-full">
+                No Transaction
+              </p>
+            ) : (
+              state?.allTransactionHistory.map(
+                ({ date, name, expenseName, type, amount }, i) => (
+                  <ul
+                    key={i}
+                    className="transaction__list grid grid-cols-[0.5fr,1.25fr,1.25fr,1fr,1.5fr,1fr]"
+                  >
+                    <li>{i + 1}</li>
+                    <li>{name}</li>
+                    <li>{expenseName || "N/A"}</li>
+                    <li
+                      className={
+                        type === "widthdraw" ||
+                        type === "send" ||
+                        type === "expense"
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }
+                    >
+                      {type}
+                    </li>
+                    <li>{date}</li>
+                    <li
+                      className={
+                        type === "widthdraw" ||
+                        type === "send" ||
+                        type === "expense"
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }
+                    >
+                      {" "}
+                      {type === "widthdraw" ||
                       type === "send" ||
                       type === "expense"
-                        ? "text-red-500"
-                        : "text-green-500"
-                    }
-                  >
-                    {type}
-                  </li>
-                  <li>{date}</li>
-                  <li
-                    className={
-                      type === "widthdraw" ||
-                      type === "send" ||
-                      type === "expense"
-                        ? "text-red-500"
-                        : "text-green-500"
-                    }
-                  >
-                    {" "}
-                    {type === "widthdraw" ||
-                    type === "send" ||
-                    type === "expense"
-                      ? "-"
-                      : "+"}{" "}
-                    {formatBalance.format(Number(amount).toFixed(2))}
-                  </li>
-                </ul>
+                        ? "-"
+                        : "+"}{" "}
+                      {formatBalance.format(Number(amount).toFixed(2))}
+                    </li>
+                  </ul>
+                )
               )
             )}
           </div>

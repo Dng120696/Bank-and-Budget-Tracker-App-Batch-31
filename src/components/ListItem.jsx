@@ -1,12 +1,10 @@
-import { Link } from "react-router-dom";
-
 function ListItem({ state, dispatch }) {
   return (
     <div className="list__item">
-      {state.accountList.length === 0 ? (
-        <p>Account List Empty</p>
+      {state?.filteredAccount.length === 0 ? (
+        <p>Add Account</p>
       ) : (
-        state.accountList.map((acc) => (
+        state?.filteredAccount.map((acc) => (
           <ul key={acc.id} className="list">
             <li>{acc.id}</li>
             <li>{acc.firstName}</li>

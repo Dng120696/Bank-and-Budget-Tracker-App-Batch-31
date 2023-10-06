@@ -5,7 +5,6 @@ export function MainPage({ state }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
 
   const navigate = useNavigate();
-  console.log(state.isApproved);
 
   return (
     <main

@@ -3,11 +3,11 @@ import CreateProfile from "../components/CreateProfile";
 import HeaderAccountList from "../components/HeaderAccountList";
 import AccountDetails from "../components/AccountDetails";
 
-export function CreateAccount({ state, dispatch }) {
+export function CreateAccount({ state, dispatch, formatBalance }) {
   return (
     <section className="create__account">
       <h1>ACCOUNT LIST</h1>
-      <HeaderAccountList dispatch={dispatch} />
+      <HeaderAccountList dispatch={dispatch} state={state} />
 
       <section className="account__list">
         <ul>
@@ -20,7 +20,11 @@ export function CreateAccount({ state, dispatch }) {
       </section>
       <CreateProfile dispatch={dispatch} state={state} />
       {state.isOpenDetails && (
-        <AccountDetails state={state} dispatch={dispatch} />
+        <AccountDetails
+          state={state}
+          dispatch={dispatch}
+          formatBalance={formatBalance}
+        />
       )}
     </section>
   );
