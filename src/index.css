@@ -42,7 +42,7 @@ body {
   opacity: 0;
   transform: scale(1, 0);
   transform-origin: top right;
-  @apply absolute lg:relative left-0 flex bottom-[-27rem] lg:bottom-[-25rem] w-full  p-10 items-center lg:items-start justify-between lg:justify-end flex-col bg-white  lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0 shadow-[0_5px_1.5rem_rgba(0,0,0,0.2)] lg:shadow-none;
+  @apply absolute lg:relative left-0 flex bottom-[-37.5rem] lg:bottom-[-24rem] w-full p-10 pb-20 items-center lg:items-start justify-between lg:justify-end flex-col bg-white  lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0 shadow-[0_5px_1.5rem_rgba(0,0,0,0.2)] lg:shadow-none;
   transition: all 600ms;
 }
 .link__item li:first-child {
@@ -56,11 +56,19 @@ body {
 .link__item li {
   @apply w-full;
 }
+.link__item li:nth-child(4) {
+  @apply pb-6 mb-4;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
 .link__item a {
-  @apply text-xl lg:text-3xl text-gray-600 font-medium py-6 px-10 w-full block;
+  @apply text-xl lg:text-3xl text-gray-600 hover:bg-blue-600 hover:text-white font-medium py-6 px-10 w-full block rounded-2xl;
+  /* transition: 300ms; */
+}
+.link__item li:last-child {
+  @apply text-xl lg:text-3xl font-medium py-6 px-10 w-full block;
 }
 .link__item a.active {
-  @apply bg-blue-600 text-white rounded-2xl relative;
+  @apply bg-blue-600 text-white  relative;
 }
 
 .menu {
@@ -73,6 +81,9 @@ body {
 .dashboard {
   @apply p-8 relative w-[clamp(30rem,90%,90rem)] h-[90vh] mx-auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.dashboard {
+  @apply p-0;
 }
 .create__account {
   @apply m-auto h-[60rem] bg-white;
@@ -107,7 +118,7 @@ body {
   @apply self-center;
 }
 .list__item {
-  @apply overflow-y-scroll h-[92%];
+  @apply overflow-y-scroll h-[80%];
 }
 .list__item > p {
   @apply flex items-center justify-center w-full text-3xl  
@@ -264,7 +275,7 @@ body {
 }
 .list__expense {
   @apply w-full h-[8rem] rounded-lg  mb-6 overflow-y-scroll;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .header__expense {
   @apply grid  grid-cols-[0.5fr,1.5fr,1.5fr,1fr]  text-xl font-bold items-center content-center bg-blue-600 text-white py-4 px-2;
@@ -274,7 +285,7 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .expense__item .expense__buttons {
-  @apply absolute right-10 top-1/2 translate-x-[-50%] translate-y-[-50%] flex gap-4 text-2xl opacity-0;
+  @apply absolute right-5 top-1/2 translate-x-[-50%] translate-y-[-50%] flex gap-4 text-2xl opacity-0;
   transition: 300ms;
 }
 .expense__item:hover .expense__buttons {
@@ -286,7 +297,7 @@ body {
   @apply grid grid-cols-3 gap-12;
 }
 input {
-  @apply w-full px-3 py-5 text-xl rounded-lg;
+  @apply w-full p-5 text-xl rounded-lg;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 .btn__add-expense {
@@ -307,7 +318,7 @@ input {
   @apply grid grid-cols-[1fr,1.5fr,2fr,1fr] bg-blue-600 text-white p-4  text-[1.8rem] font-bold;
 }
 .balance__list {
-  @apply border-[2px] border-t-0 h-[40vh] p-2 overflow-y-scroll;
+  @apply border-[2px] border-t-0 h-[85%] p-2 overflow-y-scroll;
 }
 .balance__list .list {
   @apply grid  grid-cols-[1fr,1.5fr,2fr,1fr] mb-4 pb-2 text-[1.6rem] pl-4 font-medium;

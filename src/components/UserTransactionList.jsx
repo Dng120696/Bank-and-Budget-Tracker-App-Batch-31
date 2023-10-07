@@ -1,7 +1,6 @@
 import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
 
 function UserTransactionList({ state, formatBalance }) {
-  //   const formatDate = new Intl.DateTimeFormat("en-PH", optionTransact).format(new Date());
   return (
     <div className="user__transaction">
       <ul className="header__transaction">

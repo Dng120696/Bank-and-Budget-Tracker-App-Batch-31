@@ -17,6 +17,24 @@ export const generatePassword = (lastname, date) => {
   return `${lastname}${month}${day}${year}`;
 };
 
+function storeToLocalStorage(
+  updateAccount,
+  updateSelectedAccount,
+  getAllTransaction
+) {
+  localStorage.setItem("account", JSON.stringify(updateAccount));
+  localStorage.setItem("filterAccount", JSON.stringify(updateAccount));
+
+  localStorage.setItem(
+    "selectedAccount",
+    JSON.stringify(updateSelectedAccount)
+  );
+  localStorage.setItem("filteredAccount", JSON.stringify(updateAccount));
+  localStorage.setItem(
+    "allTransactionHistory",
+    JSON.stringify(getAllTransaction || [])
+  );
+}
 export function reducerTransaction(state, action) {
   switch (action.type) {
     case "SET_INPUT": {
@@ -48,7 +66,7 @@ export function reducerTransaction(state, action) {
             acc.firstName.toLowerCase().includes(query)
           )
         : state.accountList;
-      console.log(filteredAccount);
+
       localStorage.setItem("filteredAccount", JSON.stringify(filteredAccount));
 
       return {
@@ -72,18 +90,12 @@ export function reducerTransaction(state, action) {
         ...acc.expenseList,
       ]);
 
-      localStorage.setItem("account", JSON.stringify(updateAccount));
-      localStorage.setItem("filterAccount", JSON.stringify(updateAccount));
+      storeToLocalStorage(
+        updateAccount,
+        updateSelectedAccount,
+        getAllTransaction
+      );
 
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify(updateSelectedAccount)
-      );
-      localStorage.setItem("filteredAccount", JSON.stringify(updateAccount));
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
       return {
         ...state,
         accountList: updateAccount,
@@ -148,17 +160,11 @@ export function reducerTransaction(state, action) {
         (acc) => acc.id === selectedAccount.id
       );
 
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
-
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
       return {
         ...state,
         allTransactionHistory: getAllTransaction,
@@ -202,16 +208,11 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
 
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
 
       return {
@@ -242,7 +243,7 @@ export function reducerTransaction(state, action) {
         (state.amountLoan * 1.25 * state.loanTerms) / 1000
       );
       const loanAmount = state.amountLoan - totalDeduction;
-      console.log(loanAmount);
+
       const selectedAccount = state.selectedAccount;
       const newBalance = +selectedAccount.initialBalance + +loanAmount;
       const { loanTerms, amountLoan } = state;
@@ -291,16 +292,10 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
-
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
 
       return {
@@ -366,15 +361,10 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
       return {
         ...state,
@@ -484,18 +474,11 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
-
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
-      );
-
       return {
         ...state,
         allTransactionHistory: getAllTransaction,
@@ -529,15 +512,10 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-      localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
-      localStorage.setItem("account", JSON.stringify(updatedAccount));
-      localStorage.setItem(
-        "allTransactionHistory",
-        JSON.stringify(getAllTransaction || [])
-      );
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({ ...getSelectedAccount })
+      storeToLocalStorage(
+        updatedAccount,
+        getSelectedAccount,
+        getAllTransaction
       );
       return {
         ...state,

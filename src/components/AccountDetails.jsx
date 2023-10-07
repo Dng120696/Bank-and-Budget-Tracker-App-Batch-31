@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import profilelogo from "../assets/profilelogo.png";
+import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
 
 function AccountDetails({ state, dispatch, formatBalance }) {
   const { selectedAccount } = state;
@@ -34,9 +35,9 @@ function AccountDetails({ state, dispatch, formatBalance }) {
             </p>
           </div>
 
-          <p className="text-5xl text-green-600 font-medium">
+          {/* <p className="text-5xl text-green-600 font-medium">
             {formatBalance.format(selectedAccount?.initialBalance)}
-          </p>
+          </p> */}
         </div>
         <div className="grid grid-cols-[1fr,2fr] w-[60%] text-2xl gap-y-6 mb-8">
           <p className=" text-gray-400">Date Created</p>
@@ -96,13 +97,18 @@ function AccountDetails({ state, dispatch, formatBalance }) {
                   },
                   i
                 ) => {
+                  const newDate = new Date(date);
+                  const formatDate = new Intl.DateTimeFormat(
+                    "en-PH",
+                    optionTransact
+                  ).format(newDate);
                   return (
                     <ul
                       key={i}
-                      className="grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] py-3 border-b-[1px] text-lg text-gray-600 "
+                      className="grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] py-3 border-b-[1px] text-xl text-gray-600 "
                     >
                       <li className="pl-4">{i + 1}</li>
-                      <li>{date}</li>
+                      <li>{formatDate}</li>
                       <li className="text-green-600 ml-2">
                         {formatBalance.format(principalLoan)}
                       </li>
