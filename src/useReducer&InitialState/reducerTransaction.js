@@ -66,6 +66,12 @@ export function reducerTransaction(state, action) {
         state?.selectedAccount?.id === deletedAccountId
           ? null
           : state?.selectedAccount;
+
+      const getAllTransaction = updateAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
+
       localStorage.setItem("account", JSON.stringify(updateAccount));
       localStorage.setItem("filterAccount", JSON.stringify(updateAccount));
 
@@ -74,6 +80,10 @@ export function reducerTransaction(state, action) {
         JSON.stringify(updateSelectedAccount)
       );
       localStorage.setItem("filteredAccount", JSON.stringify(updateAccount));
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction || [])
+      );
       return {
         ...state,
         accountList: updateAccount,
@@ -107,13 +117,11 @@ export function reducerTransaction(state, action) {
     case "WIDTHDRAW": {
       const withdrawalAmount = state.amountWidthdraw;
       const selectedAccount = state.selectedAccount;
-      const newBalance = +selectedAccount.initialBalance - +withdrawalAmount;
+      const newBalance = selectedAccount.initialBalance - withdrawalAmount;
 
       const widthdrawTransaction = {
         type: "widthdraw",
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: withdrawalAmount,
@@ -136,8 +144,6 @@ export function reducerTransaction(state, action) {
         ...acc.userTransactionHistory,
         ...acc.expenseList,
       ]);
-
-      console.log(getAllTransaction);
       const getSelectedAccount = updatedAccount.find(
         (acc) => acc.id === selectedAccount.id
       );
@@ -150,7 +156,7 @@ export function reducerTransaction(state, action) {
       );
       localStorage.setItem(
         "allTransactionHistory",
-        JSON.stringify(getAllTransaction)
+        JSON.stringify(getAllTransaction || [])
       );
       localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
       return {
@@ -171,9 +177,7 @@ export function reducerTransaction(state, action) {
 
       const depositTransaction = {
         type: "deposit",
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: depositAmount,
@@ -200,7 +204,7 @@ export function reducerTransaction(state, action) {
       ]);
       localStorage.setItem(
         "allTransactionHistory",
-        JSON.stringify(getAllTransaction)
+        JSON.stringify(getAllTransaction || [])
       );
       localStorage.setItem("account", JSON.stringify(updatedAccount));
 
@@ -254,9 +258,7 @@ export function reducerTransaction(state, action) {
       const paymentPermonth = totalLoan / loanTerms;
       const loanTransaction = {
         type: "loan",
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: loanAmount,
@@ -291,7 +293,7 @@ export function reducerTransaction(state, action) {
       ]);
       localStorage.setItem(
         "allTransactionHistory",
-        JSON.stringify(getAllTransaction)
+        JSON.stringify(getAllTransaction || [])
       );
       localStorage.setItem("account", JSON.stringify(updatedAccount));
 
@@ -322,18 +324,14 @@ export function reducerTransaction(state, action) {
 
       const sendingTransaction = {
         type: "send",
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         name: selectedAccount.firstName,
         id: state.selectedAccount.userTransactionHistory.length + 1,
         amount: state.senderAmount,
       };
       const receivedTransaction = {
         type: "received",
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         name: receiver.firstName,
         id: receiver.userTransactionHistory.length + 1,
         amount: state.senderAmount,
@@ -370,7 +368,7 @@ export function reducerTransaction(state, action) {
       ]);
       localStorage.setItem(
         "allTransactionHistory",
-        JSON.stringify(getAllTransaction)
+        JSON.stringify(getAllTransaction || [])
       );
       localStorage.setItem("account", JSON.stringify(updatedAccount));
       localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
@@ -463,9 +461,7 @@ export function reducerTransaction(state, action) {
         amount: state.expenseAmount,
         type: "expense",
         isEdit: false,
-        date: new Intl.DateTimeFormat("en-PH", optionTransact).format(
-          new Date()
-        ),
+        date: new Date().toISOString(),
         id: selectedAccount.expenseList.length + 1,
       };
       const newBalance =
@@ -490,7 +486,7 @@ export function reducerTransaction(state, action) {
       ]);
       localStorage.setItem(
         "allTransactionHistory",
-        JSON.stringify(getAllTransaction)
+        JSON.stringify(getAllTransaction || [])
       );
       localStorage.setItem("account", JSON.stringify(updatedAccount));
 
@@ -529,9 +525,16 @@ export function reducerTransaction(state, action) {
         (acc) => acc.id === selectedAccount.id
       );
 
+      const getAllTransaction = updatedAccount.flatMap((acc) => [
+        ...acc.userTransactionHistory,
+        ...acc.expenseList,
+      ]);
       localStorage.setItem("filteredAccount", JSON.stringify(updatedAccount));
       localStorage.setItem("account", JSON.stringify(updatedAccount));
-
+      localStorage.setItem(
+        "allTransactionHistory",
+        JSON.stringify(getAllTransaction || [])
+      );
       localStorage.setItem(
         "selectedAccount",
         JSON.stringify({ ...getSelectedAccount })

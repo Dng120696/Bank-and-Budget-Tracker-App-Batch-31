@@ -6,10 +6,10 @@ function ListItem({ state, dispatch }) {
       ) : (
         state?.filteredAccount.map((acc) => (
           <ul key={acc.id} className="list">
-            <li>{acc.id}</li>
-            <li>{acc.firstName}</li>
-            <li>{acc.lastName}</li>
-            <li>{acc.email}</li>
+            <li className="ml-5">{acc.id}</li>
+            <li className="ml-4">{acc.firstName}</li>
+            <li className="ml-4">{acc.lastName}</li>
+            <li className="ml-2">{acc.email}</li>
             <li className="button__list">
               <button
                 onClick={() => {

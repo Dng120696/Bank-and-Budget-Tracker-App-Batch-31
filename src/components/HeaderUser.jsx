@@ -30,7 +30,11 @@ function HeaderUser({ state, formatBalance }) {
             {new Intl.DateTimeFormat("en-PH", options).format(now)}
           </span>
         </p>
-        <p className="initial__balance text-green-600">
+        <p
+          className={`initial__balance ${
+            initialBalance > 0 ? "text-green-600" : "text-red-600"
+          }`}
+        >
           {formatBalance.format(Number(initialBalance).toFixed(2))}
         </p>
       </div>

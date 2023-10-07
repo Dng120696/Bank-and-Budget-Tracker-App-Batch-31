@@ -12,13 +12,13 @@ export function MainPage({ state }) {
       }`}
     >
       <aside className="side__bar relative">
-        <div className=" absolute left-0 top-0 w-full h-[26rem]">
+        <div className=" absolute left-0 top-0 w-full h-full lg:h-[26rem]">
           <img
             src={logos}
             alt=""
-            className="absolute w-full left-0 top-0 h-[26rem]"
+            className="absolute w-28 h-full lg:w-full right-0 top-0 lg:h-[26rem]"
           />
-          <h1 className="logo__title absolute z-10 bottom-[-1.5rem] left-1/2 translate-x-[-50%] translate-y-[-50%] text-5xl w-full text-blue-900 text-center font-bold">
+          <h1 className="logo__title absolute z-10 bottom-[-1.5rem] left-1/2 translate-x-[-50%] translate-y-[-50%] text-5xl w-full text-blue-900 text-center font-bold hidden lg:block">
             RISING BANK
           </h1>
         </div>

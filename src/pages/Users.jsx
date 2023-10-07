@@ -57,12 +57,12 @@ export function Users({ state, dispatch }) {
       return;
     }
 
-    if (state[field] > state?.selectedAccount.initialBalance) {
-      handleEmptyInput(field, "Not Enough Balance");
-      return;
-    }
     if (!(state[field] % 1000 === 0)) {
       handleEmptyInput(field, "Invalid Amount");
+      return;
+    }
+    if (+state[field] > +state?.selectedAccount.initialBalance) {
+      handleEmptyInput(field, "Not enough money");
       return;
     }
     dispatch({ type: "WIDTHDRAW" });
@@ -95,7 +95,6 @@ export function Users({ state, dispatch }) {
     const fields = ["senderId", "receiverId", "senderAmount"];
 
     for (const field of fields) {
-      console.log(field);
       if (!state[field]) {
         handleEmptyInput(field, "Can't be Empty");
         return;
@@ -112,7 +111,6 @@ export function Users({ state, dispatch }) {
 
           break;
         case "receiverId": {
-          console.log(state.accountList);
           const checkID = state.accountList.some(
             (acc) => acc.id === state[field]
           );
@@ -132,7 +130,7 @@ export function Users({ state, dispatch }) {
             return;
           }
           if (state[field] > state.selectedAccount.initialBalance) {
-            handleEmptyInput(field, "Not Enough Balance");
+            handleEmptyInput(field, "Not Enough Money");
             return;
           }
           if (!(state[field] % 1000 === 0)) {
@@ -193,8 +191,8 @@ export function Users({ state, dispatch }) {
     if (!validateInput(field, regexNotNegative, "Invalid Input")) {
       return;
     }
-    if (amountLoan < 10000) {
-      handleEmptyInput(field, "Must be greater than 10,000");
+    if (amountLoan < 5000) {
+      handleEmptyInput(field, "Must be greater than 5,000");
       return;
     }
     if (amountLoan > 500000) {

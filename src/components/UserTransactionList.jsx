@@ -1,4 +1,7 @@
+import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
+
 function UserTransactionList({ state, formatBalance }) {
+  //   const formatDate = new Intl.DateTimeFormat("en-PH", optionTransact).format(new Date());
   return (
     <div className="user__transaction">
       <ul className="header__transaction">
@@ -21,7 +24,11 @@ function UserTransactionList({ state, formatBalance }) {
                 deduct: "deduct",
                 loan: "loan",
               };
-
+              const newDate = new Date(date);
+              const formatDate = new Intl.DateTimeFormat(
+                "en-PH",
+                optionTransact
+              ).format(newDate);
               return (
                 <ul key={i} className="user-transaction__history">
                   <li className="text-gray-600 text-xl">{id}</li>
@@ -35,7 +42,7 @@ function UserTransactionList({ state, formatBalance }) {
                   >
                     {transactionTypes[type] || ""}
                   </li>
-                  <li className="text-lg text-gray-400 pl-4">{date}</li>
+                  <li className="text-lg text-gray-400 pl-4">{formatDate}</li>
 
                   <li
                     className={` text-xl justify-self-end self-end font-bold ${

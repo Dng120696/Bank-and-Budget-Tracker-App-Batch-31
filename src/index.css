@@ -20,7 +20,7 @@ body {
   overflow: hidden;
 }
 .main__page {
-  @apply md:grid md:grid-cols-[28rem,auto] bg-gray-100;
+  @apply lg:grid lg:grid-cols-[28rem,auto] bg-gray-100;
 }
 .overlay::before {
   content: "";
@@ -30,7 +30,7 @@ body {
   backdrop-filter: blur(3px);
 }
 .side__bar {
-  @apply bg-white h-24 px-6 md:px-8 md:pt-16 mb-12 md:mb-0 flex justify-between items-center md:flex-col md:gap-12 md:items-start md:justify-start relative text-[#3366FF] md:h-screen z-[1];
+  @apply bg-white h-24 px-6 lg:px-8 lg:pt-16  lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-[#3366FF] lg:h-screen z-[50] lg:z-[1];
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.1);
   font-family: "Black Ops One", cursive;
 }
@@ -40,9 +40,9 @@ body {
 }
 .link__item {
   opacity: 0;
-  transform: scale(0, 0) translateX(-10rem);
+  transform: scale(1, 0);
   transform-origin: top right;
-  @apply absolute md:relative left-0 flex bottom-[-16.5rem] md:bottom-[-25rem] w-full p-10 items-center md:items-start justify-between md:justify-end flex-col bg-[#3366FF] md:opacity-100 md:scale-[1] md:translate-x-0 md:bg-transparent md:p-0;
+  @apply absolute lg:relative left-0 flex bottom-[-27rem] lg:bottom-[-25rem] w-full  p-10 items-center lg:items-start justify-between lg:justify-end flex-col bg-white  lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0 shadow-[0_5px_1.5rem_rgba(0,0,0,0.2)] lg:shadow-none;
   transition: all 600ms;
 }
 .link__item li:first-child {
@@ -57,21 +57,21 @@ body {
   @apply w-full;
 }
 .link__item a {
-  @apply text-xl md:text-3xl text-gray-600 font-medium py-6 px-10 w-full block;
+  @apply text-xl lg:text-3xl text-gray-600 font-medium py-6 px-10 w-full block;
 }
 .link__item a.active {
   @apply bg-blue-600 text-white rounded-2xl relative;
 }
 
 .menu {
-  @apply text-3xl md:hidden;
+  @apply text-3xl relative z-50 lg:hidden;
 }
 .create__account,
 .user__account,
 .transaction__history,
 .user__balance-list,
 .dashboard {
-  @apply p-8 relative w-[clamp(70rem,90%,90rem)] h-[90vh] mx-auto;
+  @apply p-8 relative w-[clamp(30rem,90%,90rem)] h-[90vh] mx-auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .create__account {
@@ -89,11 +89,11 @@ body {
   @apply flex justify-between items-center mb-10;
 }
 .input__search {
-  @apply w-full p-3 text-xl rounded-md pl-16;
+  @apply w-full p-3 text-xl rounded-lg pl-16;
 }
 .btn__add-account {
   height: inherit;
-  @apply bg-blue-600 text-yellow-50 py-3 px-8 font-bold rounded-md text-xl hover:opacity-80;
+  @apply bg-blue-600 text-yellow-50 py-3 px-8 font-bold rounded-lg text-xl hover:opacity-80;
   transition: 300ms;
 }
 .account__list {
@@ -146,7 +146,7 @@ body {
   @apply mb-12;
 }
 .btn__create-account {
-  @apply w-full bg-blue-600 text-2xl p-4 rounded-md text-yellow-50 font-bold tracking-[1px];
+  @apply w-full bg-blue-600 text-2xl p-4 rounded-lg text-yellow-50 font-bold tracking-[1px];
 }
 
 .user__name {
@@ -173,7 +173,7 @@ body {
   @apply rounded-xl flex items-center justify-between gap-6 w-full;
 }
 .section__transact form button {
-  @apply rounded-md;
+  @apply rounded-lg;
 }
 .section__transact .widthdraw__form button {
   @apply bg-red-600;
@@ -195,7 +195,7 @@ body {
   @apply w-full;
 }
 .section__transact input {
-  @apply p-5 rounded-md text-xl;
+  @apply p-5 rounded-lg text-xl;
 }
 .section__transact .input__transaction input {
   @apply w-1/2;
@@ -213,7 +213,7 @@ body {
   @apply py-5 w-[18rem] uppercase text-white text-xl font-bold tracking-[1px];
 }
 .user__transaction > div {
-  @apply w-full h-[14rem] text-center rounded-md overflow-y-scroll py-6 pl-6 pr-4;
+  @apply w-full h-[14rem] text-center rounded-lg overflow-y-scroll py-6 pl-6 pr-4;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .list__item::-webkit-scrollbar,
@@ -263,7 +263,7 @@ body {
   @apply text-3xl mb-4 font-bold uppercase text-gray-900;
 }
 .list__expense {
-  @apply w-full h-[8rem] rounded-md  mb-6 overflow-y-scroll;
+  @apply w-full h-[8rem] rounded-lg  mb-6 overflow-y-scroll;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .header__expense {
@@ -286,16 +286,19 @@ body {
   @apply grid grid-cols-3 gap-12;
 }
 input {
-  @apply w-full px-3 py-5 text-xl rounded-md;
+  @apply w-full px-3 py-5 text-xl rounded-lg;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 .btn__add-expense {
-  @apply py-4 px-12 bg-red-500 text-xl uppercase font-bold text-white rounded-md;
+  @apply py-4 px-12 bg-red-500 text-xl uppercase font-bold text-white rounded-lg;
 }
 .balance__box,
 .dashboard__section {
   min-height: 100vh;
-  @apply grid place-items-center px-10 w-[clamp(80rem,80vw,90rem)] mx-auto;
+  @apply grid place-items-center px-10 w-[clamp(30rem,80vw,90rem)] mx-auto;
+}
+.dashboard__section {
+  @apply p-0;
 }
 .user__balance-list {
   @apply h-[50vh] w-full bg-white;
@@ -315,12 +318,12 @@ input {
   box-shadow: none;
 }
 .transaction__list {
-  @apply text-lg py-4;
+  @apply text-xl py-4 font-medium;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .goTo__account::before {
   content: "";
-  @apply absolute bottom-[-5px] left-0 w-0 h-[3px] bg-gray-500 rounded-full;
+  @apply absolute bottom-[-5px] left-0 w-0 h-[2px] bg-gray-400 rounded-full;
   transition: 600ms;
 }
 .goTo__account:hover::before {
