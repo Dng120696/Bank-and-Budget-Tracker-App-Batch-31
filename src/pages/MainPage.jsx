@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logos from "../assets/logo.png";
-export function MainPage({ state }) {
+export function MainPage({ state, stateLogIn }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLogOut, setIsLogOut] = useState(false);
@@ -14,6 +14,8 @@ export function MainPage({ state }) {
       "User Data:",
       JSON.parse(localStorage.getItem("bankingAppData"))
     );
+    localStorage.setItem("logInData", JSON.stringify(stateLogIn));
+    console.log("User Data:", JSON.parse(localStorage.getItem("logInData")));
     setIsLoaded((loaded) => !loaded);
     setTimeout(() => setIsLoaded((loaded) => !loaded), 3000);
   }

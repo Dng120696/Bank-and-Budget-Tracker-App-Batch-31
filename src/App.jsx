@@ -32,7 +32,10 @@ function App() {
         path="/"
         element={<LogInPage state={stateLogIn} dispatch={dispatchLogIn} />}
       />
-      <Route path="/mainPage" element={<MainPage state={stateTransact} />}>
+      <Route
+        path="/mainPage"
+        element={<MainPage state={stateTransact} stateLogIn={stateLogIn} />}
+      >
         <Route index element={<DashBoard />} />
         <Route
           path="dashboard"
