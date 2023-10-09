@@ -40,7 +40,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
                 ) : (
                   <li>{expenseName}</li>
                 )}
-                <li>{formatDate}</li>
+                <li className="text-gray-500">{formatDate}</li>
                 <li className="text-red-500">
                   {"-"} {formatBalance.format(Number(amount).toFixed(2))}
                 </li>

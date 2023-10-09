@@ -23,32 +23,28 @@ function Dashboard({ state, formatBalance }) {
 
     return dateB - dateA;
   });
-  console.log(sortedTransactions);
-
-  console.log(sortedTransactions);
 
   return (
     <section className=" dashboard__section">
       <div className="dashboard">
-        <div className="p-10 relative shadow-[0_0_10px_rgba(0,0,0,.1)] h-[20rem] mb-8 rounded-2xl bg-blue-600 text-gray-100">
-          <h1 className="text-5xl mb-6 font-bold">
-            Welcome Back <span className="text-white">Patrick!</span>{" "}
-          </h1>
-          <p className="text-[1.4rem] w-[60%] tracking-[1px] indent-10 text-justify leading-[1.8]">
-            As the admin, you have the authority to manage accounts and
-            transactions. Your role is crucial in ensuring the bank operates
-            smoothly. If you need any assistance, feel free to reach out.
-            We&apos;re here to help you succeed!
-          </p>
-          <img
-            src={logo}
-            alt="logo"
-            className="w-72 lg:w-80 absolute top-0 right-24"
-          />
+        <div className="p-10 flex items-center justify-center gap-10 lg:gap-24 flex-col-reverse lg:flex-row shadow-[0_0_10px_rgba(0,0,0,.1)]  mb-8 rounded-2xl bg-blue-600 text-gray-100">
+          <div>
+            <h1 className="text-4xl lg:text-5xl mb-6 font-bold tracking-[3px]">
+              Welcome Back!
+            </h1>
+            <p className="text-[1.4rem]  tracking-[1px] indent-10 text-justify leading-[1.8]">
+              As the admin, you have the authority to manage accounts and
+              transactions. Your role is crucial in ensuring the bank operates
+              smoothly. If you need any assistance, feel free to reach out.
+              We&apos;re here to help you succeed!
+            </p>
+          </div>
+
+          <img src={logo} alt="logo" className="w-72 " />
         </div>
 
-        <div className=" h-[12rem] mb-8 w-full grid grid-cols-3 gap-8">
-          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full rounded-xl p-8 flex items-center justify-between ">
+        <div className=" mb-8 w-full grid grid-cols-1  lg:grid-cols-3 gap-8">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.2)] h-full rounded-xl p-8 flex items-center justify-between ">
             <p>
               <span className="text-gray-600 font-bold text-2xl">
                 Total Widthdraw
@@ -59,7 +55,7 @@ function Dashboard({ state, formatBalance }) {
             </p>
             <img src={widthdrawLogo} alt="widthdraw" className="w-32" />
           </div>
-          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full rounded-xl p-8 flex items-center justify-between">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.2)] h-full rounded-xl p-8 flex items-center justify-between">
             <p>
               <span className="text-gray-600 font-bold text-2xl">
                 Total Deposit
@@ -70,7 +66,7 @@ function Dashboard({ state, formatBalance }) {
             </p>
             <img src={depositLogo} alt="widthdraw" className="w-32" />
           </div>
-          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.1)] h-full rounded-xl p-8 flex items-center justify-between">
+          <div className="bg-white shadow-[0_0_10px_rgba(0,0,0,.2)] h-full rounded-xl p-8 flex items-center justify-between">
             <p>
               <span className="text-gray-600 font-bold text-2xl">
                 Total Loan
@@ -83,7 +79,7 @@ function Dashboard({ state, formatBalance }) {
           </div>
         </div>
 
-        <div className=" shadow-[0_0_10px_rgba(0,0,0,.1)] bg-white ">
+        <div className=" shadow-[0_0_10px_rgba(0,0,0,.2)] bg-white ">
           <ul className="grid  grid-cols-[0.5fr,1fr,1fr,0.8fr,1.5fr,0.8fr] bg-blue-600 text-2xl text-white p-4 ">
             <li>No.</li>
             <li>Account Name</li>

@@ -1,4 +1,5 @@
-import { generatePassword, optionTransact } from "./reducerTransaction";
+import { optionTransact } from "./reducerTransaction";
+import { generatePassword } from "./generatePassword";
 
 export const createAccount = (state) => {
   const capitalizeFirstLetter = (text) =>

@@ -109,7 +109,7 @@ function CreateProfile({ state, dispatch }) {
     <div
       className={`create__account-profile ${state.isOpen ? "block" : "hidden"}`}
     >
-      <h1>CREATING ACCOUNT</h1>
+      <h1>CREATING AN ACCOUNT</h1>
       <i
         className="fa-solid fa-xmark text-4xl absolute top-[2rem] right-[2rem] hover:cursor-pointer "
         onClick={() =>

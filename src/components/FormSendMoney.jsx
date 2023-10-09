@@ -17,7 +17,7 @@ function FormSendMoney({ state, onSetInput, onSendMoney }) {
         <input
           type="number"
           name="senderId"
-          placeholder="Sender ID"
+          placeholder="Sender Account No."
           className={
             issenderIdError
               ? "border-1 border-rose-500"
@@ -39,7 +39,7 @@ function FormSendMoney({ state, onSetInput, onSendMoney }) {
         <input
           type="number"
           name="receiverId"
-          placeholder="Receiver ID"
+          placeholder="Receiver Account No."
           className={
             isreceiverIdError
               ? "border-1 border-rose-500"

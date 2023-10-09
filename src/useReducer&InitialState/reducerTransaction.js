@@ -1,4 +1,6 @@
 import { createAccount } from "./createAccount";
+import { handleTransaction } from "./handleTransaction";
+import { updateTransaction } from "./updateTransaction";
 
 export const optionTransact = {
   year: "numeric",
@@ -9,32 +11,6 @@ export const optionTransact = {
   second: "numeric",
 };
 
-export const generatePassword = (lastname, date) => {
-  const dateObject = new Date(date);
-  const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-  const day = String(dateObject.getDate()).padStart(2, "0");
-  const year = dateObject.getFullYear();
-  return `${lastname}${month}${day}${year}`;
-};
-
-function storeToLocalStorage(
-  updateAccount,
-  updateSelectedAccount,
-  getAllTransaction
-) {
-  localStorage.setItem("account", JSON.stringify(updateAccount));
-  localStorage.setItem("filterAccount", JSON.stringify(updateAccount));
-
-  localStorage.setItem(
-    "selectedAccount",
-    JSON.stringify(updateSelectedAccount)
-  );
-  localStorage.setItem("filteredAccount", JSON.stringify(updateAccount));
-  localStorage.setItem(
-    "allTransactionHistory",
-    JSON.stringify(getAllTransaction || [])
-  );
-}
 export function reducerTransaction(state, action) {
   switch (action.type) {
     case "SET_INPUT": {
@@ -59,13 +35,14 @@ export function reducerTransaction(state, action) {
       return createAccount(state);
 
     case "SEARCH_ACCOUNT": {
+      const { accountList } = state;
       const query = action.payload.toLowerCase();
 
       const filteredAccount = query
-        ? state.accountList.filter((acc) =>
+        ? accountList.filter((acc) =>
             acc.firstName.toLowerCase().includes(query)
           )
-        : state.accountList;
+        : accountList;
 
       localStorage.setItem("filteredAccount", JSON.stringify(filteredAccount));
 
@@ -76,31 +53,16 @@ export function reducerTransaction(state, action) {
     }
 
     case "DELETE_ACCOUNT": {
+      const { accountList, selectedAccount } = state;
       const deletedAccountId = action.payload;
-      const updateAccount = state?.accountList.filter(
+
+      const updateAccount = accountList.filter(
         (acc) => acc.id !== deletedAccountId
       );
       const updateSelectedAccount =
-        state?.selectedAccount?.id === deletedAccountId
-          ? null
-          : state?.selectedAccount;
+        selectedAccount?.id === deletedAccountId ? null : selectedAccount;
 
-      const getAllTransaction = updateAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-
-      storeToLocalStorage(
-        updateAccount,
-        updateSelectedAccount,
-        getAllTransaction
-      );
-
-      return {
-        ...state,
-        accountList: updateAccount,
-        filteredAccount: updateAccount,
-      };
+      return updateTransaction(state, updateAccount, updateSelectedAccount);
     }
     case "SELECTED_ACCOUNT": {
       localStorage.setItem("selectedAccount", JSON.stringify(action.payload));
@@ -126,103 +88,10 @@ export function reducerTransaction(state, action) {
         ...state,
         isOpen: action.payload,
       };
-    case "WIDTHDRAW": {
-      const withdrawalAmount = state.amountWidthdraw;
-      const selectedAccount = state.selectedAccount;
-      const newBalance = selectedAccount.initialBalance - withdrawalAmount;
-
-      const widthdrawTransaction = {
-        type: "widthdraw",
-        date: new Date().toISOString(),
-        name: selectedAccount.firstName,
-        id: state.selectedAccount.userTransactionHistory.length + 1,
-        amount: withdrawalAmount,
-      };
-
-      const updatedAccount = state.accountList.map((account) =>
-        account.id === selectedAccount.id
-          ? {
-              ...account,
-              initialBalance: newBalance,
-              userTransactionHistory: [
-                widthdrawTransaction,
-                ...state.selectedAccount.userTransactionHistory,
-              ],
-            }
-          : account
-      );
-
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-      const getSelectedAccount = updatedAccount.find(
-        (acc) => acc.id === selectedAccount.id
-      );
-
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
-      return {
-        ...state,
-        allTransactionHistory: getAllTransaction,
-        accountList: updatedAccount,
-        filteredAccount: updatedAccount,
-        selectedAccount: {
-          ...getSelectedAccount,
-        },
-        amountWidthdraw: "",
-      };
-    }
+    case "WIDTHDRAW":
+      return handleTransaction(state, "widthdraw");
     case "DEPOSIT": {
-      const depositAmount = state.amountDeposit;
-      const selectedAccount = state.selectedAccount;
-      const newBalance = +selectedAccount.initialBalance + +depositAmount;
-
-      const depositTransaction = {
-        type: "deposit",
-        date: new Date().toISOString(),
-        name: selectedAccount.firstName,
-        id: state.selectedAccount.userTransactionHistory.length + 1,
-        amount: depositAmount,
-      };
-
-      const updatedAccount = state.accountList.map((account) =>
-        account.id === selectedAccount.id
-          ? {
-              ...account,
-              initialBalance: newBalance,
-              userTransactionHistory: [
-                depositTransaction,
-                ...state.selectedAccount.userTransactionHistory,
-              ],
-            }
-          : account
-      );
-      const getSelectedAccount = updatedAccount.find(
-        (acc) => acc.id === selectedAccount.id
-      );
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
-
-      return {
-        ...state,
-        accountList: updatedAccount,
-        filteredAccount: updatedAccount,
-        allTransactionHistory: getAllTransaction,
-        selectedAccount: { ...getSelectedAccount },
-        amountDeposit: "",
-      };
+      return handleTransaction(state, "deposit");
     }
 
     case "IS_APPROVED":
@@ -239,21 +108,13 @@ export function reducerTransaction(state, action) {
     case "SET_LOAN-TERMS":
       return { ...state, loanTerms: action.payload };
     case "LOAN": {
-      const totalDeduction = Math.round(
-        (state.amountLoan * 1.25 * state.loanTerms) / 1000
-      );
-      const loanAmount = state.amountLoan - totalDeduction;
+      const { amountLoan, loanTerms, selectedAccount, accountList } = state;
 
-      const selectedAccount = state.selectedAccount;
+      const totalDeduction = Math.round((amountLoan * 1.25 * loanTerms) / 1000);
+      const loanAmount = amountLoan - totalDeduction;
       const newBalance = +selectedAccount.initialBalance + +loanAmount;
-      const { loanTerms, amountLoan } = state;
       const calculateInterest =
-        amountLoan && loanTerms
-          ? Math.round(
-              amountLoan *
-                (loanTerms === 6 ? 0.16 : loanTerms === 12 ? 0.28 : 0.48)
-            )
-          : "N/A";
+        amountLoan * (loanTerms === 6 ? 0.16 : loanTerms === 12 ? 0.28 : 0.48);
 
       const totalLoan = +amountLoan + +calculateInterest;
       const paymentPermonth = totalLoan / loanTerms;
@@ -261,241 +122,207 @@ export function reducerTransaction(state, action) {
         type: "loan",
         date: new Date().toISOString(),
         name: selectedAccount.firstName,
-        id: state.selectedAccount.userTransactionHistory.length + 1,
+        id: selectedAccount.userTransactionHistory.length + 1,
         amount: loanAmount,
-        principalLoan: state.amountLoan,
+        principalLoan: amountLoan,
         loanTerms,
         paymentPermonth,
         interestRate:
           loanTerms === 6 ? "16%" : loanTerms === 12 ? "28%" : "48%",
-        totalInterest: calculateInterest,
+        totalInterest: Math.round(calculateInterest),
         totalLoan,
       };
 
-      const updatedAccount = state.accountList.map((account) =>
+      const updatedAccount = accountList.map((account) =>
         account.id === selectedAccount.id
           ? {
               ...account,
               initialBalance: newBalance,
               userTransactionHistory: [
                 loanTransaction,
-                ...state.selectedAccount.userTransactionHistory,
+                ...account.userTransactionHistory,
               ],
-              loanList: [...account.loanList, loanTransaction],
+              loanList: [loanTransaction, ...account.loanList],
             }
           : account
       );
-      const getSelectedAccount = updatedAccount.find(
+      const updateSelectedAccount = updatedAccount.find(
         (acc) => acc.id === selectedAccount.id
       );
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
-
       return {
-        ...state,
-        accountList: updatedAccount,
-        filteredAccount: updatedAccount,
-        allTransactionHistory: getAllTransaction,
-        selectedAccount: { ...getSelectedAccount },
+        ...updateTransaction(state, updatedAccount, updateSelectedAccount),
         amountLoan: "",
         loanTerms: "",
       };
     }
     case "SEND_MONEY": {
-      const receiver = state.accountList.find(
-        (acc) => acc.id === state.receiverId
-      );
-
-      const newBalanceReceiver = +receiver.initialBalance + +state.senderAmount;
-      const selectedAccount = state.selectedAccount;
-      const newBalance = +selectedAccount.initialBalance - +state.senderAmount;
+      const { accountList, selectedAccount, senderAmount, receiverId } = state;
+      const receiver = accountList.find((acc) => acc.id === receiverId);
+      const newBalanceReceiver = +receiver.initialBalance + +senderAmount;
+      const newBalanceSender = +selectedAccount.initialBalance - +senderAmount;
 
       const sendingTransaction = {
         type: "send",
         date: new Date().toISOString(),
         name: selectedAccount.firstName,
-        id: state.selectedAccount.userTransactionHistory.length + 1,
-        amount: state.senderAmount,
+        id: selectedAccount.userTransactionHistory.length + 1,
+        amount: senderAmount,
       };
+
       const receivedTransaction = {
         type: "received",
         date: new Date().toISOString(),
         name: receiver.firstName,
         id: receiver.userTransactionHistory.length + 1,
-        amount: state.senderAmount,
+        amount: senderAmount,
       };
 
-      const updatedAccount = state.accountList.map((account) =>
+      const updatedAccount = accountList.map((account) =>
         account.id === receiver.id
           ? {
               ...account,
               initialBalance: newBalanceReceiver,
               userTransactionHistory: [
                 receivedTransaction,
-                ...receiver.userTransactionHistory,
+                ...account.userTransactionHistory,
               ],
             }
           : account.id === selectedAccount.id
           ? {
               ...account,
-              initialBalance: newBalance,
+              initialBalance: newBalanceSender,
               userTransactionHistory: [
                 sendingTransaction,
-                ...state.selectedAccount.userTransactionHistory,
+                ...account.userTransactionHistory,
               ],
             }
           : account
       );
 
-      const getSelectedAccount = updatedAccount.find(
+      const updateSelectedAccount = updatedAccount.find(
         (acc) => acc.id === selectedAccount.id
       );
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
       return {
-        ...state,
-        accountList: updatedAccount,
-        filteredAccount: updatedAccount,
-        allTransactionHistory: getAllTransaction,
-        selectedAccount: { ...getSelectedAccount },
+        ...updateTransaction(state, updatedAccount, updateSelectedAccount),
         receiverId: "",
         senderId: "",
         senderAmount: "",
       };
     }
     case "INPUT_EXPENSE": {
-      const updateExpenseName = state.selectedAccount.expenseList.map(
-        (expense) =>
-          expense.id === action.payload.id
-            ? { ...expense, expenseName: action.payload.input }
-            : expense
+      const { selectedAccount, accountList } = state;
+      const { input, id } = action.payload;
+      const updateExpense = selectedAccount.expenseList.map((expense) =>
+        expense.id === id ? { ...expense, expenseName: input } : expense
       );
 
-      const updateAccount = {
-        ...state.selectedAccount,
-        expenseList: updateExpenseName,
-      };
-      localStorage.setItem("selectedAccount", JSON.stringify(updateAccount));
+      const updatedAccount = accountList.map((account) =>
+        account.id === selectedAccount.id
+          ? {
+              ...account,
+              expenseList: updateExpense,
+            }
+          : account
+      );
+
+      const updateSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
 
       return {
-        ...state,
-        selectedAccount: {
-          ...state.selectedAccount,
-          expenseList: updateExpenseName,
-        },
-        editExpenseName: action.payload.input,
+        ...updateTransaction(state, updatedAccount, updateSelectedAccount),
+        editExpenseName: input,
       };
     }
     case "EDIT_EXPENSE-NAME": {
-      const pickingExpense = state.selectedAccount.expenseList.map((expense) =>
+      const { selectedAccount, accountList } = state;
+
+      const updateExpense = selectedAccount.expenseList.map((expense) =>
         expense.id === action.payload
           ? { ...expense, isEdit: !expense.isEdit }
           : expense
       );
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({
-          ...state.selectedAccount,
-          expenseList: pickingExpense,
-        })
+      const updatedAccount = accountList.map((account) =>
+        account.id === selectedAccount.id
+          ? {
+              ...account,
+              expenseList: updateExpense,
+            }
+          : account
       );
-      return {
-        ...state,
-        selectedAccount: {
-          ...state.selectedAccount,
-          expenseList: pickingExpense,
-        },
-      };
+
+      const updateSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+
+      return updateTransaction(state, updatedAccount, updateSelectedAccount);
     }
     case "SUBMIT_EDITED_EXPENSE": {
-      const pickingExpense = state.selectedAccount.expenseList.map((expense) =>
+      const { selectedAccount, accountList } = state;
+      const updateExpense = selectedAccount.expenseList.map((expense) =>
         expense.id === action.payload
           ? { ...expense, isEdit: !expense.isEdit }
           : expense
       );
-      localStorage.setItem(
-        "selectedAccount",
-        JSON.stringify({
-          ...state.selectedAccount,
-          expenseList: pickingExpense,
-        })
+      const updatedAccount = accountList.map((account) =>
+        account.id === selectedAccount.id
+          ? {
+              ...account,
+              expenseList: updateExpense,
+            }
+          : account
       );
+
+      const updateSelectedAccount = updatedAccount.find(
+        (acc) => acc.id === selectedAccount.id
+      );
+
       return {
-        ...state,
-        selectedAccount: {
-          ...state.selectedAccount,
-          expenseList: pickingExpense,
-        },
+        ...updateTransaction(state, updatedAccount, updateSelectedAccount),
         editExpenseName: "",
       };
     }
     case "EXPENSE_ITEM": {
-      const selectedAccount = state.selectedAccount;
+      const { selectedAccount, expenseName, expenseAmount, accountList } =
+        state;
+
       const addItem = {
-        expenseName: state.expenseName,
+        expenseName: expenseName,
         name: selectedAccount.firstName,
-        amount: state.expenseAmount,
+        amount: expenseAmount,
         type: "expense",
         isEdit: false,
         date: new Date().toISOString(),
         id: selectedAccount.expenseList.length + 1,
       };
-      const newBalance =
-        +state.selectedAccount.initialBalance - state.expenseAmount;
+      const newBalance = +selectedAccount.initialBalance - +expenseAmount;
 
-      const updatedAccount = state.accountList.map((account) =>
+      const updatedAccount = accountList.map((account) =>
         account.id === selectedAccount.id
           ? {
               ...account,
               initialBalance: newBalance,
-              expenseList: [...state.selectedAccount.expenseList, addItem],
+              expenseList: [addItem, ...account.expenseList],
             }
           : account
       );
 
-      const getSelectedAccount = updatedAccount.find(
+      const updateSelectedAccount = updatedAccount.find(
         (acc) => acc.id === selectedAccount.id
       );
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
       return {
-        ...state,
-        allTransactionHistory: getAllTransaction,
-        accountList: updatedAccount,
-        filteredAccount: updatedAccount,
-        selectedAccount: { ...getSelectedAccount },
+        ...updateTransaction(state, updatedAccount, updateSelectedAccount),
         expenseName: "",
         expenseAmount: "",
       };
     }
     case "DELETE_EXPENSE": {
-      const selectedAccount = state.selectedAccount;
+      const { selectedAccount, accountList } = state;
       const updateExpenseList = selectedAccount.expenseList.filter(
         (expense) => expense.id !== action.payload
       );
 
-      const updatedAccount = state.accountList.map((account) =>
+      const updatedAccount = accountList.map((account) =>
         account.id === selectedAccount.id
           ? {
               ...account,
@@ -504,23 +331,11 @@ export function reducerTransaction(state, action) {
           : account
       );
 
-      const getSelectedAccount = updatedAccount.find(
+      const updateSelectedAccount = updatedAccount.find(
         (acc) => acc.id === selectedAccount.id
       );
 
-      const getAllTransaction = updatedAccount.flatMap((acc) => [
-        ...acc.userTransactionHistory,
-        ...acc.expenseList,
-      ]);
-      storeToLocalStorage(
-        updatedAccount,
-        getSelectedAccount,
-        getAllTransaction
-      );
-      return {
-        ...state,
-        selectedAccount: { ...getSelectedAccount },
-      };
+      return updateTransaction(state, updatedAccount, updateSelectedAccount);
     }
     default:
       return state;

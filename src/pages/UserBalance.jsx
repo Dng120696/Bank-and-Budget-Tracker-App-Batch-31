@@ -7,6 +7,7 @@ function UserBalance({ state }) {
   return (
     <section className="balance__box">
       <div className="user__balance-list">
+        <h1 className="text-5xl font-bold mb-6">USER BALANCES</h1>
         <ul className="user__list">
           <li>No.</li>
           <li>Holder&apos;s Name</li>

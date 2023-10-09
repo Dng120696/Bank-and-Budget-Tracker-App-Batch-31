@@ -15,7 +15,7 @@ function FormAddingExpense({ state, onSetExpene, onSetInput }) {
           <input
             type="text"
             name="expenseName"
-            placeholder="Expense"
+            placeholder="Expense Name"
             className={
               isexpenseNameError
                 ? "border-1 border-rose-500"

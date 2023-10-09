@@ -1,26 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 * {
   margin: 0;
   padding: 0;
   outline: none;
   box-sizing: inherit;
+  font-family: "Roboto", sans-serif;
 }
 body {
   min-height: 100vh;
   overflow: hidden;
 }
+.log__in {
+  min-height: 100vh;
+  background: url("./assets/bg-login.png") no-repeat center center/ cover;
+}
+.load__box {
+  transition: 600ms;
+}
+.show__load {
+  @apply opacity-100 translate-y-0;
+  transition: 600ms;
+}
 .main__page {
-  @apply lg:grid lg:grid-cols-[28rem,auto] bg-gray-100;
+  @apply lg:grid lg:grid-cols-[28rem,auto];
 }
 .overlay::before {
   content: "";
@@ -30,19 +41,17 @@ body {
   backdrop-filter: blur(3px);
 }
 .side__bar {
-  @apply bg-white h-24 px-6 lg:px-8 lg:pt-16  lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-[#3366FF] lg:h-screen z-[50] lg:z-[1];
+  @apply bg-white h-24 px-6 lg:px-8 lg:pt-16  lg:mb-0 flex justify-between items-center lg:flex-col lg:gap-12 lg:items-start lg:justify-start relative text-[#3366FF] lg:min-h-screen z-[50] lg:z-[1];
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.1);
-  font-family: "Black Ops One", cursive;
 }
 .logo__title {
   letter-spacing: 3px;
-  font-family: "Orbitron", sans-serif;
 }
 .link__item {
   opacity: 0;
   transform: scale(1, 0);
   transform-origin: top right;
-  @apply absolute lg:relative left-0 flex bottom-[-37.5rem] lg:bottom-[-24rem] w-full p-10 pb-20 items-center lg:items-start justify-between lg:justify-end flex-col bg-white  lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0 shadow-[0_5px_1.5rem_rgba(0,0,0,0.2)] lg:shadow-none;
+  @apply absolute lg:relative left-0 flex bottom-[-43rem] lg:bottom-[-24rem] w-full p-10 pb-20 items-center lg:items-start justify-between lg:justify-end flex-col bg-white  lg:opacity-100 lg:scale-[1] lg:translate-x-0 lg:bg-transparent lg:p-0 shadow-[0_5px_1.5rem_rgba(0,0,0,0.2)] lg:shadow-none;
   transition: all 600ms;
 }
 .link__item li:first-child {
@@ -57,11 +66,11 @@ body {
   @apply w-full;
 }
 .link__item li:nth-child(4) {
-  @apply pb-6 mb-4;
+  @apply pb-6 mb-6;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
 .link__item a {
-  @apply text-xl lg:text-3xl text-gray-600 hover:bg-blue-600 hover:text-white font-medium py-6 px-10 w-full block rounded-2xl;
+  @apply text-2xl lg:text-3xl text-gray-600 hover:bg-blue-600 hover:text-white font-medium py-6 px-10 w-full block rounded-2xl;
   /* transition: 300ms; */
 }
 .link__item li:last-child {
@@ -79,53 +88,56 @@ body {
 .transaction__history,
 .user__balance-list,
 .dashboard {
-  @apply p-8 relative w-[clamp(30rem,90%,90rem)] h-[90vh] mx-auto;
+  @apply py-10 px-8 relative w-[clamp(30rem,90%,90rem)] lg:h-[90vh] mx-auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .dashboard {
   @apply p-0;
+}
+.create__account-box {
+  @apply min-h-screen flex items-center justify-center;
 }
 .create__account {
   @apply m-auto h-[60rem] bg-white;
 }
 
 .user__account {
-  @apply m-auto py-0 mb-[5rem];
+  @apply m-auto p-0 mb-[5rem];
   box-shadow: none;
 }
 .create__account > h1 {
-  @apply text-4xl font-bold tracking-[2px] mb-8;
+  @apply text-5xl font-bold tracking-[2px] mb-8;
 }
 .header__account {
-  @apply flex justify-between items-center mb-10;
+  @apply flex justify-between lg:items-center flex-col-reverse lg:flex-row  mb-10;
 }
 .input__search {
-  @apply w-full p-3 text-xl rounded-lg pl-16;
+  @apply w-[clamp(25rem,30vw,30rem)] lg:w-full  p-3 text-xl rounded-lg pl-16;
 }
 .btn__add-account {
   height: inherit;
-  @apply bg-blue-600 text-yellow-50 py-3 px-8 font-bold rounded-lg text-xl hover:opacity-80;
+  @apply bg-blue-600 text-yellow-50 py-3 px-8 font-bold rounded-lg text-xl hover:opacity-80 w-[15rem] mb-6 lg:mb-0;
   transition: 300ms;
 }
 .account__list {
-  @apply h-[45rem];
+  @apply h-[clamp(40rem,52vw,44rem)];
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .account__list > ul:first-child {
-  @apply grid grid-cols-5 content-center  justify-center items-center w-full text-[1.6rem] font-bold mb-6 py-4 px-6 bg-blue-600 text-white;
+  @apply grid grid-cols-4 lg:grid-cols-5 content-center  justify-center items-center w-full text-[1rem] lg:text-[1.6rem] font-bold mb-6 py-4 px-6 bg-blue-600 text-white;
 }
 .account__list > ul:first-child li {
   @apply self-center;
 }
-.list__item {
-  @apply overflow-y-scroll h-[80%];
-}
-.list__item > p {
+.account__list-box > p {
   @apply flex items-center justify-center w-full text-3xl  
   text-gray-300 font-bold;
   height: inherit;
 }
-.list__item .list {
+.account__list-box {
+  @apply overflow-y-scroll h-[85%];
+}
+.account__list-box .list {
   @apply text-[1.4rem] font-medium text-gray-600 grid-cols-5 grid pb-4 mb-4 w-full relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -135,20 +147,20 @@ body {
   transition: opacity 300ms;
 }
 
-.list__item .list:hover .button__list {
+.account__list-box .list:hover .button__list {
   @apply opacity-100;
   transition: opacity 300ms;
 }
 .create__account-profile {
-  @apply w-[45rem] mx-auto text-center absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-12 z-10 bg-white rounded-lg;
+  @apply w-[clamp(30rem,95%,45rem)] mx-auto text-center absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-12 z-10 bg-white rounded-lg;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .create__account-profile > h1 {
-  @apply font-bold text-4xl mb-6;
+  @apply font-bold text-3xl lg:text-4xl mb-6;
 }
 .create__account-profile input {
-  @apply w-full p-4 mb-8 text-[1.6rem];
+  @apply w-full p-4  mb-8 text-[1.4rem] lg:text-[1.6rem];
 }
 #inputDate::placeholder {
   @apply text-gray-400;
@@ -157,7 +169,7 @@ body {
   @apply mb-12;
 }
 .btn__create-account {
-  @apply w-full bg-blue-600 text-2xl p-4 rounded-lg text-yellow-50 font-bold tracking-[1px];
+  @apply w-full bg-blue-600 text-xl lg:text-2xl p-4 rounded-lg text-yellow-50 font-bold tracking-[1px];
 }
 
 .user__name {
@@ -176,7 +188,7 @@ body {
   @apply text-6xl font-bold;
 }
 .section__transact {
-  @apply grid grid-cols-[1.25fr,1fr] gap-6 p-8 mb-8 bg-white;
+  @apply grid grid-cols-[1.25fr,1fr] gap-7 p-8 mb-8 bg-white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -227,7 +239,7 @@ body {
   @apply w-full h-[14rem] text-center rounded-lg overflow-y-scroll py-6 pl-6 pr-4;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
-.list__item::-webkit-scrollbar,
+.account__list-box::-webkit-scrollbar,
 .loan__list::-webkit-scrollbar,
 .balance__list::-webkit-scrollbar,
 .transaction__box::-webkit-scrollbar,
@@ -235,7 +247,7 @@ body {
 .user__transaction > div::-webkit-scrollbar {
   width: 1rem;
 }
-.list__item::-webkit-scrollbar-track,
+.account__list-box::-webkit-scrollbar-track,
 .loan__list::-webkit-scrollbar-track,
 .balance__list::-webkit-scrollbar-track,
 .transaction__box::-webkit-scrollbar-track,
@@ -243,7 +255,7 @@ body {
 .user__transaction > div::-webkit-scrollbar-track {
   background: transparent;
 }
-.list__item::-webkit-scrollbar-thumb,
+.account__list-box::-webkit-scrollbar-thumb,
 .loan__list::-webkit-scrollbar-thumb,
 .balance__list::-webkit-scrollbar-thumb,
 .transaction__box::-webkit-scrollbar-thumb,
@@ -262,7 +274,7 @@ body {
   @apply grid  grid-cols-[.3fr,0.8fr,1.5fr,1fr] text-left text-xl font-bold bg-blue-600 text-white py-4 px-2;
 }
 .user-transaction__history {
-  @apply text-left grid-cols-[.3fr,0.8fr,1.5fr,1fr] grid mb-4 pb-4;
+  @apply text-left grid-cols-[.3fr,0.8fr,1.5fr,0.8fr] grid mb-4 pb-4;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -305,11 +317,11 @@ input {
 }
 .balance__box,
 .dashboard__section {
-  min-height: 100vh;
-  @apply grid place-items-center px-10 w-[clamp(30rem,80vw,90rem)] mx-auto;
+  @apply grid place-items-center px-0 lg:px-10  w-[clamp(30rem,80vw,90rem)] mx-auto;
 }
+
 .dashboard__section {
-  @apply p-0;
+  @apply flex items-center justify-center min-h-screen;
 }
 .user__balance-list {
   @apply h-[50vh] w-full bg-white;
@@ -318,14 +330,14 @@ input {
   @apply grid grid-cols-[1fr,1.5fr,2fr,1fr] bg-blue-600 text-white p-4  text-[1.8rem] font-bold;
 }
 .balance__list {
-  @apply border-[2px] border-t-0 h-[85%] p-2 overflow-y-scroll;
+  @apply border-[2px] border-t-0 h-3/4 p-2 overflow-y-scroll;
 }
 .balance__list .list {
   @apply grid  grid-cols-[1fr,1.5fr,2fr,1fr] mb-4 pb-2 text-[1.6rem] pl-4 font-medium;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .dashboard {
-  @apply h-[80vh] w-full;
+  @apply w-full h-3/4  m-auto;
   box-shadow: none;
 }
 .transaction__list {

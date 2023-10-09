@@ -34,10 +34,6 @@ function AccountDetails({ state, dispatch, formatBalance }) {
               </span>
             </p>
           </div>
-
-          {/* <p className="text-5xl text-green-600 font-medium">
-            {formatBalance.format(selectedAccount?.initialBalance)}
-          </p> */}
         </div>
         <div className="grid grid-cols-[1fr,2fr] w-[60%] text-2xl gap-y-6 mb-8">
           <p className=" text-gray-400">Date Created</p>
@@ -105,7 +101,7 @@ function AccountDetails({ state, dispatch, formatBalance }) {
                   return (
                     <ul
                       key={i}
-                      className="grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] py-3 border-b-[1px] text-xl text-gray-600 "
+                      className="grid grid-cols-[0.4fr,1.25fr,0.8fr,0.5fr,0.5fr,0.75fr,0.8fr,0.6fr] py-3 border-b-[1px] text-xl text-gray-600 font-medium "
                     >
                       <li className="pl-4">{i + 1}</li>
                       <li>{formatDate}</li>

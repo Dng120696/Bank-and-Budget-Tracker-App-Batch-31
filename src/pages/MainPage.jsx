@@ -3,16 +3,27 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logos from "../assets/logo.png";
 export function MainPage({ state }) {
   const [isOpenLink, setIsOpenLink] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLogOut, setIsLogOut] = useState(false);
+
   const navigate = useNavigate();
 
   function handleLoadData() {
-    localStorage.setItem("initialState", JSON.stringify(state));
-    console.log("User Data:", JSON.parse(localStorage.getItem("initialState")));
+    localStorage.setItem("bankingAppData", JSON.stringify(state));
+    console.log(
+      "User Data:",
+      JSON.parse(localStorage.getItem("bankingAppData"))
+    );
+    setIsLoaded((loaded) => !loaded);
+    setTimeout(() => setIsLoaded((loaded) => !loaded), 3000);
   }
+
   return (
     <main
       className={`main__page ${
-        state.isOpen || state.isApproved || state.isOpenDetails ? "overlay" : ""
+        state.isOpen || state.isApproved || state.isOpenDetails || isLogOut
+          ? "overlay"
+          : ""
       }`}
     >
       <aside className="side__bar relative">
@@ -20,7 +31,7 @@ export function MainPage({ state }) {
           <img
             src={logos}
             alt=""
-            className="absolute w-24 h-full lg:w-full right-0 top-[-1rem] lg:h-[24rem]"
+            className="absolute w-24 h-full lg:w-full right-0 top-0 lg:top-[-1rem] lg:h-[24rem]"
           />
           <h1 className="logo__title absolute z-10 bottom-0 left-1/2 translate-x-[-50%] translate-y-[-50%] text-5xl w-full text-blue-900 text-center font-bold hidden lg:block">
             RISING BANK
@@ -38,7 +49,7 @@ export function MainPage({ state }) {
             <NavLink to="/mainPage/dashboard">Dashboard</NavLink>
           </li>
           <li>
-            <NavLink to="/mainPage/accounts">Accounts Overview</NavLink>
+            <NavLink to="/mainPage/accounts">Accounts</NavLink>
           </li>
           <li>
             <NavLink
@@ -51,17 +62,56 @@ export function MainPage({ state }) {
             <NavLink to="/mainPage/balance">User Balances</NavLink>
           </li>
           <li
-            className="load__data text-3xl hover:cursor-pointer text-gray-600 hover:bg-blue-600 hover:text-white rounded-2xl"
+            className="load__data text-2xl lg:text-3xl hover:cursor-pointer text-gray-600 hover:bg-blue-600 hover:text-white rounded-2xl px-10 py-6"
             onClick={handleLoadData}
           >
             Load User Data
           </li>
+          <li
+            className="text-gray-600 lg:absolute top-[100%] hover:bg-blue-600 hover:cursor-pointer hover:text-white rounded-2xl"
+            onClick={() => setIsLogOut(true)}
+          >
+            <button>Log Out</button>
+          </li>
         </ul>
-
-        <div className="relative lg:absolute  text-xl lg:text-4xl bottom-[-36rem] lg:bottom-12 left-[-72.5%] lg:left-12 py-6 px-6  tracking-[1px] font-medium text-gray-500 flex flex-col items-start gap-10 ">
-          <button onClick={() => navigate("/")}>Log Out</button>
-        </div>
       </aside>
+
+      {isLogOut && (
+        <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] shadow-[0_0_1rem_rgba(0,0,0,0.3)] p-12 w-[35rem] h-[20rem] bg-white z-50 flex flex-col justify-between items-center rounded-lg ">
+          <p className="text-4xl font-bold text-center">
+            Are you sure you want to Log out?
+          </p>
+
+          <div className="grid grid-cols-2 gap-10  w-full">
+            <button
+              className="w-full text-center rounded-md py-4 text-white bg-red-600 text-2xl"
+              onClick={() => navigate("/")}
+            >
+              Yes
+            </button>
+            <button
+              className="w-full text-center rounded-md py-6 bg-blue-600 text-white text-2xl"
+              onClick={() => {
+                navigate("/mainPage/dashboard");
+                setIsLogOut(false);
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`load__box absolute top-10 right-10  text-xl font-medium h-16 rounded-lg bg-green-500 text-white flex items-center justify-center px-12 py-10 opacity-0 translate-y-[-5rem] z-50 ${
+          isLoaded ? "show__load" : ""
+        }`}
+      >
+        <p>
+          The data has been Loaded{" "}
+          <i className="fa-regular fa-circle-check text-3xl ml-4"></i>
+        </p>
+      </div>
 
       <Outlet />
     </main>

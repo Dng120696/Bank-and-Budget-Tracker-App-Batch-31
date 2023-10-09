@@ -91,7 +91,7 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
             <p className="text-gray-400 ">Total Loan</p>
             <p
               className={` font-bold text-gray-600  ${
-                loanTerms ? "text-green-600 underline" : ""
+                loanTerms ? "text-green-600 underline text-2xl" : ""
               }`}
             >
               {loanTerms ? formatBalance.format(totalLoan) : "N/A"}
@@ -114,8 +114,8 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
             <p className="text-gray-400 ">Total Amount to Receive</p>
             <p
               className={`font-bold text-gray-600 ${
-                loanTerms ? "text-green-600  underline" : ""
-              }s`}
+                loanTerms ? "text-green-600 underline text-2xl" : ""
+              }`}
             >
               {loanTerms ? formatBalance.format(totalAmountReceived) : "N/A"}
             </p>

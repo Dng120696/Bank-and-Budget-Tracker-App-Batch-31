@@ -41,7 +41,9 @@ function UserTransactionList({ state, formatBalance }) {
                   >
                     {transactionTypes[type] || ""}
                   </li>
-                  <li className="text-lg text-gray-400 pl-4">{formatDate}</li>
+                  <li className="text-lg text-gray-500 font-medium pl-4">
+                    {formatDate}
+                  </li>
 
                   <li
                     className={` text-xl justify-self-end self-end font-bold ${

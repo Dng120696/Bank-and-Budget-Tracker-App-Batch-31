@@ -9,12 +9,13 @@ import { useState } from "react";
 import CalculateLoan from "../components/CalculateLoan";
 
 export function Users({ state, dispatch }) {
+  const [isOpenApproved, setIsOpenApproved] = useState(false);
   const formatBalance = new Intl.NumberFormat("en-PH", {
     style: "currency",
     currency: "PHP",
   });
   const { amountLoan } = state;
-  const [isOpenApproved, setIsOpenApproved] = useState(false);
+
   // Validation and Error Handling Functions
   const regexNotNegative = /^(?!-)\d+(\.\d+)?$/;
   const regexInput = /^[A-Za-z]/;
@@ -53,11 +54,11 @@ export function Users({ state, dispatch }) {
       return;
     }
     if (state[field] < 1000) {
-      handleEmptyInput(field, "Must be greater than 1000");
+      handleEmptyInput(field, "Minimum of 1000");
       return;
     }
 
-    if (!(state[field] % 1000 === 0)) {
+    if (!(state[field] % 100 === 0)) {
       handleEmptyInput(field, "Invalid Amount");
       return;
     }
@@ -79,13 +80,10 @@ export function Users({ state, dispatch }) {
       return;
     }
     if (state[field] < 1000) {
-      handleEmptyInput(field, "Must be greater than 1000");
+      handleEmptyInput(field, "Minimum of 1000");
       return;
     }
-    if (!(state[field] % 1000 === 0)) {
-      handleEmptyInput(field, "Invalid Amount");
-      return;
-    }
+
     dispatch({ type: "DEPOSIT" });
   }
 
@@ -119,22 +117,18 @@ export function Users({ state, dispatch }) {
             return;
           }
           if (state[field] === state.senderId) {
-            handleEmptyInput(field, "Cannot be the same as Sender ID");
+            handleEmptyInput(field, "Can't be the same as Sender");
             return;
           }
           break;
         }
         case "senderAmount": {
           if (state[field] < 1000) {
-            handleEmptyInput(field, "Must be greater than 1000");
+            handleEmptyInput(field, "Minimum of 1000");
             return;
           }
-          if (state[field] > state.selectedAccount.initialBalance) {
+          if (+state[field] > +state.selectedAccount.initialBalance) {
             handleEmptyInput(field, "Not Enough Money");
-            return;
-          }
-          if (!(state[field] % 1000 === 0)) {
-            handleEmptyInput(field, "Invalid Amount");
             return;
           }
           break;
@@ -192,11 +186,11 @@ export function Users({ state, dispatch }) {
       return;
     }
     if (amountLoan < 5000) {
-      handleEmptyInput(field, "Must be greater than 5,000");
+      handleEmptyInput(field, "Minimum of 5,000");
       return;
     }
     if (amountLoan > 500000) {
-      handleEmptyInput(field, "Must be below than 500,000");
+      handleEmptyInput(field, "Maximum of 500,000");
       return;
     }
     if (!(amountLoan % 1000 === 0)) {

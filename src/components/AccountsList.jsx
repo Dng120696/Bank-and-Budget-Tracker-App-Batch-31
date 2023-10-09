@@ -1,6 +1,6 @@
-function ListItem({ state, dispatch }) {
+function AccountsList({ state, dispatch }) {
   return (
-    <div className="list__item">
+    <div className="account__list-box">
       {state?.filteredAccount.length === 0 ? (
         <p>Add Account</p>
       ) : (
@@ -34,4 +34,4 @@ function ListItem({ state, dispatch }) {
   );
 }
 
-export default ListItem;
+export default AccountsList;
