@@ -77,7 +77,7 @@ export function LogInPage({ state, dispatch }) {
             onChange={hanleInput}
           />
           {isadminUserError && (
-            <small className="text-lg text-red-500 absolute top-[11rem] left-12">
+            <small className="text-lg text-red-500 absolute top-[21rem] left-12">
               {adminUserError}
             </small>
           )}
