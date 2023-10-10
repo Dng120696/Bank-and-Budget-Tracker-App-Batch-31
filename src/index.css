@@ -31,7 +31,7 @@ body {
   transition: 600ms;
 }
 .main__page {
-  @apply lg:grid lg:grid-cols-[28rem,auto];
+  @apply lg:grid lg:grid-cols-[28rem,auto] bg-slate-100;
 }
 .overlay::before {
   content: "";
