@@ -65,7 +65,7 @@ export function MainPage({ state, stateLogIn }) {
           </li>
           <li
             className="load__data text-2xl lg:text-3xl hover:cursor-pointer text-gray-600 hover:bg-blue-600 hover:text-white rounded-2xl px-10 py-6"
-            onClick={handleLoadData}
+              onClick={handleLoadData}
           >
             Load User Data
           </li>

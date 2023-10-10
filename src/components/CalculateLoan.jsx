@@ -15,7 +15,7 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
   const totalLoan = +amountLoan + +calculateInterest;
 
   return (
-    <section className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] rounded-md w-[95%] h-[32rem] shadow-[0_0_1rem_rgba(0,0,0,0.3)] bg-white z-50 py-12 px-8">
+    <section className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] rounded-md w-[95%] h-[32rem] shadow-[0_0_1rem_rgba(0,0,0,0.3)] bg-white z-[50] py-12 px-8 ">
       <div className="loan__calculate px-4 py-6 mb-8 rounded-md">
         <div className="grid grid-cols-2 md:text-xl xl:text-2xl mb-4 w-[30%]">
           <i
