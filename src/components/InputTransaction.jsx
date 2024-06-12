@@ -1,10 +1,7 @@
-function InputTransaction({
-  state,
-  onWidthdraw,
-  onDeposit,
-  onSetInput,
-  onSetLoan,
-}) {
+import useStore from "../store/store";
+
+function InputTransaction({ onWidthdraw, onDeposit, onSetInput, onSetLoan }) {
+  const state = useStore();
   const {
     isamountWidthdrawError,
     isamountDepositError,

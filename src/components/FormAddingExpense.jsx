@@ -1,4 +1,7 @@
-function FormAddingExpense({ state, onSetExpene, onSetInput }) {
+import useStore from "../store/store";
+
+function FormAddingExpense({ onSetExpene, onSetInput }) {
+  const state = useStore();
   const {
     expenseName,
     expenseAmount,

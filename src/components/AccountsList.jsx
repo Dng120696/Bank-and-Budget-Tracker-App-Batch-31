@@ -1,4 +1,8 @@
-function AccountsList({ state, dispatch }) {
+import useStore from "../store/store";
+
+function AccountsList() {
+  const state = useStore();
+  const { selected_account, delete_account } = state;
   return (
     <div className="account__list-box">
       {state?.filteredAccount.length === 0 ? (
@@ -11,21 +15,9 @@ function AccountsList({ state, dispatch }) {
             <li className="ml-4">{acc.lastName}</li>
             <li className="ml-2">{acc.email}</li>
             <li className="button__list">
-              <button
-                onClick={() => {
-                  dispatch({ type: "SELECTED_ACCOUNT", payload: acc });
-                }}
-              >
-                View
-              </button>
+              <button onClick={() => selected_account(acc)}>View</button>
 
-              <button
-                onClick={() =>
-                  dispatch({ type: "DELETE_ACCOUNT", payload: acc.id })
-                }
-              >
-                Delete
-              </button>
+              <button onClick={() => delete_account(acc.id)}>Delete</button>
             </li>
           </ul>
         ))

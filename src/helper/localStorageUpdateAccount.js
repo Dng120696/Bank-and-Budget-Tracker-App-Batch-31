@@ -1,4 +1,4 @@
-export function storeToLocalStorage(
+export const localStorageUpdateAccount = function (
   updateAccount,
   updateSelectedAccount,
   getAllTransaction
@@ -13,4 +13,4 @@ export function storeToLocalStorage(
     "allTransactionHistory",
     JSON.stringify(getAllTransaction)
   );
-}
+};

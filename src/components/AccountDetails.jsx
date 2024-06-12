@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import profilelogo from "../assets/profilelogo.png";
-import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
-
-function AccountDetails({ state, dispatch, formatBalance }) {
-  const { selectedAccount } = state;
+import { optionDateFormat } from "../utils/option";
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
+function AccountDetails() {
+  const state = useStore();
+  const { selectedAccount, close_account_details, set_modal } = state;
   const [isOpenPass, setIsOpenPass] = useState(false);
 
   const options = { year: "numeric", month: "long", day: "numeric" };
@@ -13,9 +15,7 @@ function AccountDetails({ state, dispatch, formatBalance }) {
     <section className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-full md:h-[55rem] shadow-[0_0_1rem_rgba(0,0,0,0.3)] bg-white z-50 py-12 pt-20 px-10 rounded-md">
       <i
         className="fa-solid fa-xmark text-4xl absolute right-10 top-8 hover:cursor-pointer hover:text-gray-400 "
-        onClick={() =>
-          dispatch({ type: "CLOSE_ACCOUNT-DETAILS", payload: false })
-        }
+        onClick={() => close_account_details(false)}
       ></i>
 
       <>
@@ -96,7 +96,7 @@ function AccountDetails({ state, dispatch, formatBalance }) {
                   const newDate = new Date(date);
                   const formatDate = new Intl.DateTimeFormat(
                     "en-PH",
-                    optionTransact
+                    optionDateFormat
                   ).format(newDate);
                   return (
                     <ul
@@ -131,8 +131,8 @@ function AccountDetails({ state, dispatch, formatBalance }) {
           <Link
             to={`/mainPage/users/${selectedAccount.firstName || ""}`}
             onClick={() => {
-              dispatch({ type: "CLOSE_ACCOUNT-DETAILS", payload: false });
-              dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false });
+              close_account_details(false);
+              set_modal(false);
             }}
           >
             <button className=" bg-blue-600 text-white py-4 px-12 font-bold text-xl rounded-md ">

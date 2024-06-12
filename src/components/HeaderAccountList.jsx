@@ -1,14 +1,19 @@
-function HeaderAccountList({ dispatch, state }) {
-  const { issearchQueryError, searchQueryError } = state;
+import useStore from "../store/store";
+
+function HeaderAccountList() {
+  const state = useStore();
+  const {
+    issearchQueryError,
+    searchQueryError,
+    set_input,
+    search_account,
+    set_modal,
+  } = state;
 
   function handleSearch(e) {
     const { name, value } = e.target;
-    dispatch({
-      type: "SET_INPUT",
-      payload: { field: name, input: value },
-    });
-
-    dispatch({ type: "SEARCH_ACCOUNT", payload: value });
+    set_input(name, value);
+    search_account(value);
   }
 
   return (
@@ -34,10 +39,7 @@ function HeaderAccountList({ dispatch, state }) {
         )}
       </div>
 
-      <button
-        className="btn btn__add-account"
-        onClick={() => dispatch({ type: "OPEN_MODAL-ACCOUNT", payload: true })}
-      >
+      <button className="btn btn__add-account" onClick={() => set_modal(true)}>
         Add Account
       </button>
     </header>

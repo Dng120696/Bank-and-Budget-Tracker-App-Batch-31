@@ -1,6 +1,9 @@
-import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
+import { optionDateFormat } from "../utils/option";
 
-function UserTransactionList({ state, formatBalance }) {
+function UserTransactionList() {
+  const state = useStore();
   return (
     <div className="user__transaction">
       <ul className="header__transaction">
@@ -26,7 +29,7 @@ function UserTransactionList({ state, formatBalance }) {
               const newDate = new Date(date);
               const formatDate = new Intl.DateTimeFormat(
                 "en-PH",
-                optionTransact
+                optionDateFormat
               ).format(newDate);
               return (
                 <ul key={i} className="user-transaction__history">

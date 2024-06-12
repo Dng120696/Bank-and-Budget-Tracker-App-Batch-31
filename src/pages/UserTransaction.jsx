@@ -7,34 +7,37 @@ import ListOfExpenses from "../components/ListOfExpenses";
 import FormAddingExpense from "../components/FormAddingExpense";
 import { useState } from "react";
 import CalculateLoan from "../components/CalculateLoan";
+import useStore from "../store/store";
 
-export function Users({ state, dispatch }) {
+export function UserTransaction() {
   const [isOpenApproved, setIsOpenApproved] = useState(false);
-  const formatBalance = new Intl.NumberFormat("en-PH", {
-    style: "currency",
-    currency: "PHP",
-  });
-  const { amountLoan } = state;
+  const state = useStore();
+
+  const {
+    amountLoan,
+    set_input,
+    validate_input,
+    withdraw,
+    deposit,
+    send_money,
+    create_expense,
+    is_approved,
+  } = state;
 
   // Validation and Error Handling Functions
   const regexNotNegative = /^(?!-)\d+(\.\d+)?$/;
   const regexInput = /^[A-Za-z]/;
 
   function handleInput(e) {
-    dispatch({
-      type: "SET_INPUT",
-      payload: { field: e.target.name, input: e.target.value },
-    });
+    const { name, value } = e.target;
+    set_input(name, value);
   }
 
   function handleEmptyInput(field, message) {
-    dispatch({
-      type: "EMPTY_INPUT",
-      payload: { field, message },
-    });
+    validate_input(field, message);
   }
 
-  function validateInput(field, regex, errorMessage) {
+  function validateUser(field, regex, errorMessage) {
     if (!regex.test(state[field])) {
       handleEmptyInput(field, errorMessage);
       return false;
@@ -50,7 +53,7 @@ export function Users({ state, dispatch }) {
       return;
     }
 
-    if (!validateInput(field, regexNotNegative, "Invalid Input")) {
+    if (!validateUser(field, regexNotNegative, "Invalid Input")) {
       return;
     }
     if (state[field] < 1000) {
@@ -66,7 +69,7 @@ export function Users({ state, dispatch }) {
       handleEmptyInput(field, "Not enough money");
       return;
     }
-    dispatch({ type: "WIDTHDRAW" });
+    withdraw();
   }
 
   function handleDeposit(e) {
@@ -76,15 +79,14 @@ export function Users({ state, dispatch }) {
       handleEmptyInput(field, "Can't be Empty");
       return;
     }
-    if (!validateInput(field, regexNotNegative, "Invalid Input")) {
+    if (!validateUser(field, regexNotNegative, "Invalid Input")) {
       return;
     }
     if (state[field] < 1000) {
       handleEmptyInput(field, "Minimum of 1000");
       return;
     }
-
-    dispatch({ type: "DEPOSIT" });
+    deposit();
   }
 
   function handleSendMoney(e) {
@@ -97,7 +99,7 @@ export function Users({ state, dispatch }) {
         handleEmptyInput(field, "Can't be Empty");
         return;
       }
-      if (!validateInput(field, regexNotNegative, "Invalid Input")) {
+      if (!validateUser(field, regexNotNegative, "Invalid Input")) {
         return;
       }
       switch (field) {
@@ -135,8 +137,7 @@ export function Users({ state, dispatch }) {
         }
       }
     }
-
-    dispatch({ type: "SEND_MONEY" });
+    send_money();
   }
 
   function handleExpense(e) {
@@ -145,7 +146,6 @@ export function Users({ state, dispatch }) {
     const fields = ["expenseName", "expenseAmount"];
 
     for (const field of fields) {
-      console.log(field);
       if (!state[field]) {
         handleEmptyInput(field, "Can't be Empty");
         return;
@@ -153,7 +153,7 @@ export function Users({ state, dispatch }) {
 
       switch (field) {
         case "expenseName":
-          if (!validateInput(field, regexInput, "Can't start with a number")) {
+          if (!validateUser(field, regexInput, "Can't start with a number")) {
             return;
           }
           if (state[field].length <= 2) {
@@ -162,7 +162,7 @@ export function Users({ state, dispatch }) {
           }
           break;
         case "expenseAmount":
-          if (!validateInput(field, regexNotNegative, "Invalid Input")) {
+          if (!validateUser(field, regexNotNegative, "Invalid Input")) {
             return;
           }
           if (state[field] < 100) {
@@ -172,8 +172,7 @@ export function Users({ state, dispatch }) {
           break;
       }
     }
-
-    dispatch({ type: "EXPENSE_ITEM" });
+    create_expense();
   }
   function handleLoan(e) {
     e.preventDefault();
@@ -182,7 +181,7 @@ export function Users({ state, dispatch }) {
       handleEmptyInput(field, "Can't be Empty");
       return;
     }
-    if (!validateInput(field, regexNotNegative, "Invalid Input")) {
+    if (!validateUser(field, regexNotNegative, "Invalid Input")) {
       return;
     }
     if (amountLoan < 5000) {
@@ -197,26 +196,25 @@ export function Users({ state, dispatch }) {
       handleEmptyInput(field, "Invalid Amount");
       return;
     }
-    dispatch({ type: "IS_APPROVED", payload: true });
+
+    is_approved(true);
     setIsOpenApproved(true);
   }
 
   return (
     <>
       <section className="user__account ">
-        <HeaderUser state={state} formatBalance={formatBalance} />
+        <HeaderUser />
 
         <section className="section__transact">
-          <UserTransactionList state={state} formatBalance={formatBalance} />
+          <UserTransactionList />
           <InputTransaction
-            state={state}
             onDeposit={handleDeposit}
             onWidthdraw={handleWidthdraw}
             onSetLoan={handleLoan}
             onSetInput={handleInput}
           />
           <FormSendMoney
-            state={state}
             onSetInput={handleInput}
             onSendMoney={handleSendMoney}
           />
@@ -224,25 +222,13 @@ export function Users({ state, dispatch }) {
 
         <section className="expense__list">
           <HeaderExpense />
-          <ListOfExpenses
-            state={state}
-            dispatch={dispatch}
-            formatBalance={formatBalance}
-          />
+          <ListOfExpenses />
           <FormAddingExpense
-            state={state}
             onSetInput={handleInput}
             onSetExpene={handleExpense}
           />
         </section>
-        {isOpenApproved && (
-          <CalculateLoan
-            formatBalance={formatBalance}
-            state={state}
-            dispatch={dispatch}
-            onApproved={setIsOpenApproved}
-          />
-        )}
+        {isOpenApproved && <CalculateLoan onApproved={setIsOpenApproved} />}
       </section>
       ;
     </>

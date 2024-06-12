@@ -1,4 +1,7 @@
-function CreateProfile({ state, dispatch }) {
+import useStore from "../store/store";
+
+function CreateProfile() {
+  const state = useStore();
   const {
     isaccountHolderFirstNameError,
     isaccountHolderLastNameError,
@@ -11,6 +14,10 @@ function CreateProfile({ state, dispatch }) {
     birthDateError,
     emailError,
     accountList,
+    validate_input,
+    create_account,
+    set_modal,
+    set_input,
   } = state;
 
   const listFrstName = accountList.map((acc) => acc.firstName.toLowerCase());
@@ -21,10 +28,7 @@ function CreateProfile({ state, dispatch }) {
   const regexNotNegative = /^(?!-)\d+(\.\d+)?$/;
 
   function handleError(field, message) {
-    dispatch({
-      type: "EMPTY_INPUT",
-      payload: { field, message },
-    });
+    validate_input(field, message);
   }
 
   function validateInput(field, regex, errorMessage) {
@@ -99,12 +103,12 @@ function CreateProfile({ state, dispatch }) {
           break;
       }
     }
-
-    dispatch({ type: "CREATE_ACCOUNT" });
+    create_account();
   }
 
   const chechError = (isError) =>
     isError ? "border-1 border-rose-500" : "border-[2px_solid_rgba(0,0,0,0.2)]";
+
   return (
     <div
       className={`create__account-profile ${state.isOpen ? "block" : "hidden"}`}
@@ -112,9 +116,7 @@ function CreateProfile({ state, dispatch }) {
       <h1>CREATING AN ACCOUNT</h1>
       <i
         className="fa-solid fa-xmark text-4xl absolute top-[2rem] right-[2rem] hover:cursor-pointer "
-        onClick={() =>
-          dispatch({ type: "CLOSE_MODAL-ACCOUNT", payload: false })
-        }
+        onClick={() => set_modal(false)}
       ></i>
       <form id="createProfile" onSubmit={createAccount}>
         <div className="relative">
@@ -125,15 +127,10 @@ function CreateProfile({ state, dispatch }) {
             placeholder="First Name"
             className={chechError(isaccountHolderFirstNameError)}
             value={state.accountHolderFirstName}
-            onChange={(e) =>
-              dispatch({
-                type: "SET_INPUT",
-                payload: {
-                  field: e.target.name,
-                  input: e.target.value,
-                },
-              })
-            }
+            onChange={(e) => {
+              const { name, value } = e.target;
+              set_input(name, value);
+            }}
           />
           {isaccountHolderFirstNameError ? (
             <small className="absolute bottom-0 left-0 text-xl text-red-400">
@@ -151,15 +148,10 @@ function CreateProfile({ state, dispatch }) {
             placeholder="Last Name"
             value={state.accountHolderLastName}
             className={chechError(isaccountHolderLastNameError)}
-            onChange={(e) =>
-              dispatch({
-                type: "SET_INPUT",
-                payload: {
-                  field: e.target.name,
-                  input: e.target.value,
-                },
-              })
-            }
+            onChange={(e) => {
+              const { name, value } = e.target;
+              set_input(name, value);
+            }}
           />
           {isaccountHolderLastNameError ? (
             <small className="absolute bottom-0 left-0 text-xl text-red-400">
@@ -176,12 +168,10 @@ function CreateProfile({ state, dispatch }) {
             placeholder="example@gmail.com"
             value={state.email}
             className={chechError(isemailError)}
-            onChange={(e) =>
-              dispatch({
-                type: "SET_INPUT",
-                payload: { field: e.target.name, input: e.target.value },
-              })
-            }
+            onChange={(e) => {
+              const { name, value } = e.target;
+              set_input(name, value);
+            }}
           />
           {isemailError ? (
             <small className="absolute bottom-0 left-0 text-xl text-red-400">
@@ -198,12 +188,10 @@ function CreateProfile({ state, dispatch }) {
             id="inputDate"
             value={state.birthDate}
             className={chechError(isbirthDateError)}
-            onChange={(e) =>
-              dispatch({
-                type: "SET_INPUT",
-                payload: { field: e.target.name, input: e.target.value },
-              })
-            }
+            onChange={(e) => {
+              const { name, value } = e.target;
+              set_input(name, value);
+            }}
           />
           {isbirthDateError ? (
             <small className="absolute bottom-0 left-0 text-xl text-red-400">
@@ -221,12 +209,10 @@ function CreateProfile({ state, dispatch }) {
             placeholder="Initial Balance"
             value={state.accountInitialBalance}
             className={chechError(isaccountInitialBalanceError)}
-            onChange={(e) =>
-              dispatch({
-                type: "SET_INPUT",
-                payload: { field: e.target.name, input: e.target.value },
-              })
-            }
+            onChange={(e) => {
+              const { name, value } = e.target;
+              set_input(name, value);
+            }}
           />
           {isaccountInitialBalanceError ? (
             <small className="absolute bottom-[1rem] left-0 text-xl text-red-400">

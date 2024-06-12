@@ -9,8 +9,6 @@ export function updateAccountList(
   const updateSelectedAccount =
     updatedAccount.find((acc) => acc.id === selectedAccount.id) || null;
 
-  return {
-    ...updateTransaction(state, updatedAccount, updateSelectedAccount),
-    [`amount${type.slice(0, 1).toUpperCase() + type.slice(1)}`]: "",
-  };
+  updateTransaction(state, updatedAccount, updateSelectedAccount);
+  state[`amount${type.slice(0, 1).toUpperCase() + type.slice(1)}`] = "";
 }

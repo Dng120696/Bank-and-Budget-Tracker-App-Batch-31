@@ -2,13 +2,15 @@ import AccountsList from "../components/AccountsList";
 import CreateProfile from "../components/CreateProfile";
 import HeaderAccountList from "../components/HeaderAccountList";
 import AccountDetails from "../components/AccountDetails";
+import useStore from "../store/store";
 
-export function CreateAccount({ state, dispatch, formatBalance }) {
+export function AccountsPage() {
+  const isOpenDetails = useStore((state) => state.isOpenDetails);
   return (
     <div className="create__account-box">
       <section className="create__account">
         <h1>ACCOUNT LIST</h1>
-        <HeaderAccountList dispatch={dispatch} state={state} />
+        <HeaderAccountList />
 
         <section className="account__list">
           <ul>
@@ -17,16 +19,10 @@ export function CreateAccount({ state, dispatch, formatBalance }) {
             <li>Last Name</li>
             <li>Email</li>
           </ul>
-          <AccountsList state={state} dispatch={dispatch} />
+          <AccountsList />
         </section>
-        <CreateProfile dispatch={dispatch} state={state} />
-        {state.isOpenDetails && (
-          <AccountDetails
-            state={state}
-            dispatch={dispatch}
-            formatBalance={formatBalance}
-          />
-        )}
+        <CreateProfile />
+        {isOpenDetails && <AccountDetails />}
       </section>
     </div>
   );

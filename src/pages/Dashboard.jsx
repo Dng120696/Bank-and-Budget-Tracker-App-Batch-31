@@ -2,9 +2,12 @@ import logo from "../assets/dashboardimg.png";
 import widthdrawLogo from "../assets/withdraw.png";
 import depositLogo from "../assets/deposit.png";
 import loanLogo from "../assets/loan.png";
-import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
+import { optionDateFormat } from "../utils/option";
+import { formatBalance } from "../utils/formatBalance";
+import useStore from "../store/store";
 
-function Dashboard({ state, formatBalance }) {
+function Dashboard() {
+  const state = useStore();
   const transactionTypes = ["widthdraw", "deposit", "loan"];
 
   const summary = transactionTypes.reduce((acc, type) => {
@@ -17,7 +20,7 @@ function Dashboard({ state, formatBalance }) {
 
   const { widthdraw, deposit, loan } = summary;
 
-  const sortedTransactions = state?.allTransactionHistory.sort((a, b) => {
+  const sortedTransactions = [...state.allTransactionHistory].sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
 
@@ -99,7 +102,7 @@ function Dashboard({ state, formatBalance }) {
                   const newDate = new Date(date);
                   const formatDate = new Intl.DateTimeFormat(
                     "en-PH",
-                    optionTransact
+                    optionDateFormat
                   ).format(newDate);
                   return (
                     <ul

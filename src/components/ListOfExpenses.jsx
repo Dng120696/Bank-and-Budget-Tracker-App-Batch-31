@@ -1,6 +1,15 @@
-import { optionTransact } from "../useReducer&InitialState/reducerTransaction";
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
+import { optionDateFormat } from "../utils/option";
 
-function ListOfExpenses({ state, dispatch, formatBalance }) {
+function ListOfExpenses() {
+  const state = useStore();
+  const {
+    submit_edited_expense,
+    edit_expense_name,
+    update_expenses,
+    delete_expense,
+  } = state;
   return (
     <div className="list__expense">
       {state.selectedAccount?.expenseList.length === 0 ? (
@@ -11,7 +20,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
             const newDate = new Date(date);
             const formatDate = new Intl.DateTimeFormat(
               "en-PH",
-              optionTransact
+              optionDateFormat
             ).format(newDate);
 
             return (
@@ -21,7 +30,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      dispatch({ type: "SUBMIT_EDITED_EXPENSE", payload: id });
+                      submit_edited_expense(id);
                     }}
                   >
                     <input
@@ -29,12 +38,7 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
                       name="editExpense"
                       className="input__expense  p-2 w-3/4 border-2"
                       value={state.editExpenseName}
-                      onChange={(e) =>
-                        dispatch({
-                          type: "INPUT_EXPENSE",
-                          payload: { input: e.target.value, id },
-                        })
-                      }
+                      onChange={(e) => update_expenses(e.target.value, id)}
                     />
                   </form>
                 ) : (
@@ -45,19 +49,13 @@ function ListOfExpenses({ state, dispatch, formatBalance }) {
                   {"-"} {formatBalance.format(Number(amount).toFixed(2))}
                 </li>
                 <div className="expense__buttons">
-                  <button
-                    onClick={() =>
-                      dispatch({ type: "EDIT_EXPENSE-NAME", payload: id })
-                    }
-                  >
+                  <button onClick={() => edit_expense_name(id)}>
                     <i className="fa-regular fa-pen-to-square"></i>
                   </button>
                   <button>
                     <i
                       className="fa-solid fa-trash-can"
-                      onClick={() =>
-                        dispatch({ type: "DELETE_EXPENSE", payload: id })
-                      }
+                      onClick={() => delete_expense(id)}
                     ></i>
                   </button>
                 </div>

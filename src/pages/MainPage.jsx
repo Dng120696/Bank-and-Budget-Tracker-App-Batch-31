@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logos from "../assets/logo.png";
-export function MainPage({ state, stateLogIn }) {
+import useStore from "../store/store";
+export function MainPage() {
+  const state = useStore();
+  const { isOpen, isApproved, isOpenDetails, adminAccount } = state;
   const [isOpenLink, setIsOpenLink] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLogOut, setIsLogOut] = useState(false);
@@ -14,7 +17,7 @@ export function MainPage({ state, stateLogIn }) {
       "User Data:",
       JSON.parse(localStorage.getItem("bankingAppData"))
     );
-    localStorage.setItem("logInData", JSON.stringify(stateLogIn));
+    localStorage.setItem("logInData", JSON.stringify(adminAccount));
     console.log("User Data:", JSON.parse(localStorage.getItem("logInData")));
     setIsLoaded((loaded) => !loaded);
     setTimeout(() => setIsLoaded((loaded) => !loaded), 3000);
@@ -23,9 +26,7 @@ export function MainPage({ state, stateLogIn }) {
   return (
     <main
       className={`main__page ${
-        state.isOpen || state.isApproved || state.isOpenDetails || isLogOut
-          ? "overlay"
-          : ""
+        isOpen || isApproved || isOpenDetails || isLogOut ? "overlay" : ""
       }`}
     >
       <aside className="side__bar relative">
@@ -65,7 +66,7 @@ export function MainPage({ state, stateLogIn }) {
           </li>
           <li
             className="load__data text-2xl lg:text-3xl hover:cursor-pointer text-gray-600 hover:bg-blue-600 hover:text-white rounded-2xl px-10 py-6"
-              onClick={handleLoadData}
+            onClick={handleLoadData}
           >
             Load User Data
           </li>

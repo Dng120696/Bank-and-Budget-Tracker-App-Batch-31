@@ -1,8 +1,8 @@
-function UserBalance({ state }) {
-  const formatBalance = new Intl.NumberFormat("en-PH", {
-    style: "currency",
-    currency: "PHP",
-  });
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
+
+function UserBalance() {
+  const state = useStore();
 
   return (
     <section className="balance__box">

@@ -1,6 +1,9 @@
 import profilelogo from "../assets/profilelogo.png";
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
 
-function HeaderUser({ state, formatBalance }) {
+function HeaderUser() {
+  const state = useStore();
   const { initialBalance, firstName, lastName, id } =
     state?.selectedAccount || "";
   const now = new Date();

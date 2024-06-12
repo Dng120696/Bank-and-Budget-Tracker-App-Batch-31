@@ -1,5 +1,11 @@
-function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
-  const { loanTerms, amountLoan } = state;
+import useStore from "../store/store";
+import { formatBalance } from "../utils/formatBalance";
+
+function CalculateLoan({ onApproved }) {
+  const state = useStore();
+  const { loanTerms, amountLoan, reject, is_approved, set_loan_terms, loan } =
+    state;
+
   const calculateTotalDeduction = Math.round(
     (amountLoan * loanTerms * 1.25) / 1000
   );
@@ -21,8 +27,8 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
           <i
             className="fa-solid fa-xmark absolute right-12 top-10 text-4xl hover:cursor-pointer hover:text-gray-400"
             onClick={() => {
-              dispatch({ type: "REJECT" });
-              dispatch({ type: "IS_APPROVED", payload: false });
+              reject();
+              is_approved(false);
               onApproved(false);
             }}
           ></i>
@@ -37,12 +43,7 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
           <select
             value={loanTerms}
             className=" text-xl  border p-2  text-center"
-            onChange={(e) =>
-              dispatch({
-                type: "SET_LOAN-TERMS",
-                payload: +e.target.value,
-              })
-            }
+            onChange={(e) => set_loan_terms(+e.target.value)}
           >
             <option value="" disabled>
               Select Terms
@@ -127,9 +128,8 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
           className="rounded-md  py-3 px-12 bg-blue-500 text-xl text-white font-bold "
           onClick={() => {
             if (!loanTerms || !amountLoan) return;
-            dispatch({ type: "LOAN" });
-            dispatch({ type: "IS_APPROVED", payload: false });
-
+            is_approved(false);
+            loan();
             onApproved(false);
           }}
         >
@@ -138,9 +138,8 @@ function CalculateLoan({ state, dispatch, formatBalance, onApproved }) {
         <button
           className=" rounded-md py-3 px-12 bg-red-500 text-xl text-white font-bold "
           onClick={() => {
-            dispatch({ type: "IS_APPROVED", payload: false });
-            dispatch({ type: "REJECT" });
-
+            is_approved(false);
+            reject();
             onApproved(false);
           }}
         >

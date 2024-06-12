@@ -1,4 +1,8 @@
-function FormSendMoney({ state, onSetInput, onSendMoney }) {
+import useStore from "../store/store";
+
+function FormSendMoney({ onSetInput, onSendMoney }) {
+  const state = useStore();
+
   const {
     senderAmount,
     receiverId,

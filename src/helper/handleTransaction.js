@@ -1,7 +1,8 @@
 import { updateAccountList } from "./updateAccountList";
 
 export function handleTransaction(state, type) {
-  const { amountWidthdraw, amountDeposit, selectedAccount } = state;
+  const { amountWidthdraw, amountDeposit, selectedAccount, accountList } =
+    state;
   const checkType = type === "widthdraw" ? amountWidthdraw : amountDeposit;
   const newBalance =
     checkType === amountWidthdraw
@@ -15,8 +16,8 @@ export function handleTransaction(state, type) {
     id: selectedAccount.userTransactionHistory.length + 1,
     amount: checkType,
   };
-  console.log(addTransaction);
-  const updatedAccount = state.accountList.map((account) =>
+
+  const updatedAccount = accountList.map((account) =>
     account.id === selectedAccount.id
       ? {
           ...account,
@@ -28,5 +29,5 @@ export function handleTransaction(state, type) {
         }
       : account
   );
-  return updateAccountList(state, selectedAccount, type, updatedAccount);
+  updateAccountList(state, selectedAccount, type, updatedAccount);
 }
