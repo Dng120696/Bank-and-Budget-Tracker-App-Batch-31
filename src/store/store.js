@@ -144,10 +144,8 @@ const useStore = create(
           (acc) => acc.id === selectedAccount.id
         );
 
-        return {
-          ...updateTransaction(state, updatedAccount, updateSelectedAccount),
-          editExpenseName: "",
-        };
+        updateTransaction(state, updatedAccount, updateSelectedAccount);
+        state.editExpenseName = "";
       }),
     create_expense: () =>
       set((state) => {
